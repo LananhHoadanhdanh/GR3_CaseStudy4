@@ -8,12 +8,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/songs")
 public class SongController {
 
@@ -49,7 +54,15 @@ public class SongController {
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
     @PostMapping("")
-    public ResponseEntity<Song> createSong(@RequestBody Song song){
+    public ResponseEntity<Song> createSong(@RequestBody Song song, @RequestParam MultipartFile image1){
+        String fileName = image1.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(image1.getBytes(),
+                    new File("D:\\case_module4\\" + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        song.setImage(fileName);
         song.setCreateTime(LocalDateTime.now());
         songService.save(song);
         return new ResponseEntity<>(song,HttpStatus.OK);
@@ -59,7 +72,6 @@ public class SongController {
         songService.remove(id);
         return new ResponseEntity<>(songService.findById(id).get(),HttpStatus.OK);
     }
-
 
 
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background-size: cover;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: 1px solid;
+        }
+
+        td, tr, th {
+            border: 1px solid;
+        }
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function findAll() {
+            $.ajax({
+                type: "Get",
+                url: "http://localhost:8080/songs",
+                success: function (songs) {
+                    console.log(songs)
+                    display(songs.content)
+                },
+                error: function (error) {
+                    alert("ảo")
+                }
+            })
+        }
+
+        function showCreate() {
+            let str = `  <input type="text" name="name">  <br>
+    <input type="text" name="description">
+   <br>
+    <input type="text" name="lyrics">  <br>
+    <input type="number" name="singer">  <br>
+    <input type="number" name="user">  <br>
+    <div>
+        <label>Image</label>
+        <input type="file" name="image1"/>
+    </div>
+ <button onclick="createSong()"> thêm</button>`
+            document.getElementById("res").innerHTML = str
+        }
+        function createSong(){
+            $.ajax
+        }
+
+        function display(songs) {
+            let str = "";
+            for (let i = 0; i < songs.length; i++) {
+                str +=
+                    ` <img src="../static/img/${songs[i].image}" height="150"width="150"/><p>${songs[i].name}</p>`
+            }
+            document.getElementById("res").innerHTML = str
+        }
+
+
+    </script>
+
+
+</head>
+<body>
+<center>
+
+    <button onclick="findAll()">
+        Show List
+    </button>
+    <button onclick="showCreate()">create</button>
+
+</center>
+
+<center>
+    <div id="res">
+    </div>
+</center>
+</body>
+</html>
