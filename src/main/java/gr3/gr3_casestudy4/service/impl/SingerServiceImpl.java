@@ -28,8 +28,4 @@ public class SingerServiceImpl implements SingerService {
         singerRepository.save(singer);
     }
 
-    @Override
-    public void remove(Long id) {
-        singerRepository.deleteById(id);
-    }
 }

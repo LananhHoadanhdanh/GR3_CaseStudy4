@@ -26,8 +26,13 @@ public class SingerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Singer> detail(@PathVariable Long id){
+    public ResponseEntity<Singer> oneSinger(@PathVariable Long id){
         Optional<Singer> singer=singerService.findById(id);
         return new ResponseEntity<>(singer.get(),HttpStatus.OK);
+    }
+    @PostMapping("")
+    public ResponseEntity<Singer> create(@RequestBody Singer singer){
+        singerService.save(singer);
+        return new ResponseEntity<>(singer,HttpStatus.CREATED);
     }
 }
