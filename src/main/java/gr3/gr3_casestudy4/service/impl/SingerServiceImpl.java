@@ -24,11 +24,5 @@ public class SingerServiceImpl implements SingerService {
 
     @Override
     public void save(Singer singer) {
-
-    }
-
-    @Override
-    public void remove(Long id) {
-
     }
 }

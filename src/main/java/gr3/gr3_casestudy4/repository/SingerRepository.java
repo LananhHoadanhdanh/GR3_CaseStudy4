@@ -2,6 +2,8 @@ package gr3.gr3_casestudy4.repository;
 
 import gr3.gr3_casestudy4.model.Singer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
