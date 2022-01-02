@@ -28,12 +28,15 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public void save(Song song) {
-songRepository.save(song);
+        songRepository.save(song);
     }
 
     @Override
     public void remove(Long id) {
-
+      Song song = songRepository.findById(id).get();
+      song.setStatus(0);
+      song.setId(id);
+      songRepository.save(song);
     }
 
     @Override
@@ -43,7 +46,7 @@ songRepository.save(song);
 
     @Override
     public Page<Song> findAllByNameContaining(String name, Pageable pageable) {
-        return songRepository.findAllByNameContaining(name,pageable);
+        return songRepository.findAllByNameContaining(name, pageable);
     }
 
     @Override

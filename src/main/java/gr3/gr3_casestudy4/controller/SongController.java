@@ -54,6 +54,12 @@ public class SongController {
         songService.save(song);
         return new ResponseEntity<>(song,HttpStatus.OK);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Song> deleteSong(@PathVariable Long id){
+        songService.remove(id);
+        return new ResponseEntity<>(songService.findById(id).get(),HttpStatus.OK);
+    }
+
 
 
 }
