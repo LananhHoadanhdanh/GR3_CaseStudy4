@@ -23,12 +23,12 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Optional<Song> findById(Long id) {
-        return Optional.empty();
+        return songRepository.findById(id);
     }
 
     @Override
     public void save(Song song) {
-
+songRepository.save(song);
     }
 
     @Override
@@ -43,6 +43,6 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Page<Song> findAllByNameContaining(String name, Pageable pageable) {
-        return null;
+        return songRepository.findAllByNameContaining(name,pageable);
     }
 }

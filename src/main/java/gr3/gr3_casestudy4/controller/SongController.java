@@ -9,8 +9,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/songs")
@@ -23,5 +26,10 @@ public class SongController {
     public ResponseEntity<Page<Song>> findAll(@PageableDefault(value = 6)Pageable pageable){
         Page<Song> songs=songService.findAll(pageable);
         return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Song> findOne(@PathVariable Long id){
+        Optional<Song> song=songService.findById(id);
+        return new ResponseEntity<>(song.get(),HttpStatus.OK);
     }
 }
