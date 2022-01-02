@@ -12,13 +12,16 @@ public class Singer {
     private String description;
     private String avatar;
     private int status;
+    @ManyToOne
+    private User user;
 
     public Singer() {
     }
 
-    public Singer(String name, String description) {
+    public Singer(String name, String description, User user) {
         this.name = name;
         this.description = description;
+        this.user = user;
     }
 
     public Long getId() {
@@ -59,5 +62,13 @@ public class Singer {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

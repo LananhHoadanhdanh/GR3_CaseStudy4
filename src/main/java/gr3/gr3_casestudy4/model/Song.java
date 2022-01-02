@@ -16,6 +16,9 @@ public class Song {
     private int status;
     private LocalDateTime createTime;
 
+    @ManyToOne
+    private User user;
+
     @Column(length = 10000)
     private String lyrics;
 
@@ -25,11 +28,12 @@ public class Song {
     public Song() {
     }
 
-    public Song(String name, String description, String lyrics, Singer singer) {
+    public Song(String name, String description, String lyrics, Singer singer, User user) {
         this.name = name;
         this.description = description;
         this.lyrics = lyrics;
         this.singer = singer;
+        this.user = user;
     }
 
     public Long getId() {
@@ -102,5 +106,13 @@ public class Song {
 
     public void setSinger(Singer singer) {
         this.singer = singer;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
