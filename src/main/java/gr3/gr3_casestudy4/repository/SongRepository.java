@@ -11,4 +11,5 @@ public interface SongRepository extends JpaRepository<Song,Long> {
     @Override
     Page<Song> findAll(Pageable pageable);
     Page<Song> findAllByNameContaining(String name,Pageable pageable);
+    Page<Song> findAllByOrderByCreateTimeDesc(Pageable pageable);
 }

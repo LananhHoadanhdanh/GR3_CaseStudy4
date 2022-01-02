@@ -45,4 +45,9 @@ songRepository.save(song);
     public Page<Song> findAllByNameContaining(String name, Pageable pageable) {
         return songRepository.findAllByNameContaining(name,pageable);
     }
+
+    @Override
+    public Page<Song> findAllByOrderByCreateTimeDesc(Pageable pageable) {
+        return songRepository.findAllByOrderByCreateTimeDesc(pageable);
+    }
 }

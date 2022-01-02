@@ -38,5 +38,11 @@ public class SongController {
        songService.save(song);
        return new ResponseEntity<>(song,HttpStatus.OK);
     }
+    @GetMapping("/orderByTime")
+    public ResponseEntity<Page<Song>> findAllOrderByTime(@PageableDefault(value = 6)Pageable pageable){
+        Page<Song> songs=songService.findAllByOrderByCreateTimeDesc(pageable);
+        return new ResponseEntity<>(songs,HttpStatus.OK);
+    }
+
 
 }

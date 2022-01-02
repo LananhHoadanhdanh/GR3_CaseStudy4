@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable;
 public interface SongService extends GeneralService<Song> {
     Page<Song> findAll(Pageable pageable);
     Page<Song> findAllByNameContaining(String name,Pageable pageable);
+    Page<Song> findAllByOrderByCreateTimeDesc(Pageable pageable);
+
 }
