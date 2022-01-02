@@ -28,6 +28,31 @@ public class Song {
     public Song() {
     }
 
+    public Song(String name, String description, String mp3file, String image, int status, LocalDateTime createTime, User user, String lyrics, Singer singer) {
+        this.name = name;
+        this.description = description;
+        this.mp3file = mp3file;
+        this.image = image;
+        this.status = status;
+        this.createTime = createTime;
+        this.user = user;
+        this.lyrics = lyrics;
+        this.singer = singer;
+    }
+
+    public Song(Long id, String name, String description, String mp3file, String image, int status, LocalDateTime createTime, User user, String lyrics, Singer singer) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.mp3file = mp3file;
+        this.image = image;
+        this.status = status;
+        this.createTime = createTime;
+        this.user = user;
+        this.lyrics = lyrics;
+        this.singer = singer;
+    }
+
     public Song(String name, String description, String lyrics, Singer singer, User user) {
         this.name = name;
         this.description = description;
