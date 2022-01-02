@@ -5,11 +5,10 @@ import gr3.gr3_casestudy4.service.SingerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/singers")
@@ -26,4 +25,9 @@ public class SingerController {
         return new ResponseEntity<>(singers, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Singer> detail(@PathVariable Long id){
+        Optional<Singer> singer=singerService.findById(id);
+        return new ResponseEntity<>(singer.get(),HttpStatus.OK);
+    }
 }
