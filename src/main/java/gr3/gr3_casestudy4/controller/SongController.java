@@ -43,6 +43,10 @@ public class SongController {
         Page<Song> songs=songService.findAllByOrderByCreateTimeDesc(pageable);
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
-
+    @GetMapping("/search")
+    public ResponseEntity<Page<Song>> findAllOrderByName(@PageableDefault(value = 6)Pageable pageable,@RequestParam String q){
+        Page<Song> songs=songService.findAllByNameContaining(q,pageable);
+        return new ResponseEntity<>(songs,HttpStatus.OK);
+    }
 
 }
