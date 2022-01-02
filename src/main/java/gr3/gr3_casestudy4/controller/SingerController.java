@@ -22,6 +22,8 @@ public class SingerController {
         List<Singer> singers = (List<Singer>) singerService.findAll();
         if (singers.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } return new ResponseEntity<>(singers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(singers, HttpStatus.OK);
     }
+
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
 public class SingerServiceImpl implements SingerService {
     @Autowired
@@ -19,16 +20,16 @@ public class SingerServiceImpl implements SingerService {
 
     @Override
     public Optional<Singer> findById(Long id) {
-        return Optional.empty();
+        return singerRepository.findById(id);
     }
 
     @Override
     public void save(Singer singer) {
-
+        singerRepository.save(singer);
     }
 
     @Override
     public void remove(Long id) {
-
+        singerRepository.deleteById(id);
     }
 }
