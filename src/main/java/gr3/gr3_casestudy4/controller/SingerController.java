@@ -35,4 +35,11 @@ public class SingerController {
         singerService.save(singer);
         return new ResponseEntity<>(singer,HttpStatus.CREATED);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Singer> delete(@PathVariable Long id){
+        Singer singer = singerService.findById(id).get();
+        singer.setStatus(0);
+        singerService.save(singer);
+        return new  ResponseEntity<>(singer,HttpStatus.OK);
+    }
 }
