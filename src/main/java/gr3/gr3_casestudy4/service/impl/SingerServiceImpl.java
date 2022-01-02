@@ -19,10 +19,11 @@ public class SingerServiceImpl implements SingerService {
 
     @Override
     public Optional<Singer> findById(Long id) {
-        return Optional.empty();
+        return singerRepository.findById(id);
     }
 
     @Override
     public void save(Singer singer) {
+        singerRepository.save(singer);
     }
 }
