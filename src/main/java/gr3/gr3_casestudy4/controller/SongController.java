@@ -48,5 +48,12 @@ public class SongController {
         Page<Song> songs=songService.findAllByNameContaining(q,pageable);
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
+    @PostMapping("")
+    public ResponseEntity<Song> createSong(@RequestBody Song song){
+        song.setCreateTime(LocalDateTime.now());
+        songService.save(song);
+        return new ResponseEntity<>(song,HttpStatus.OK);
+    }
+
 
 }
