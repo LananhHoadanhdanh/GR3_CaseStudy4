@@ -1,8 +1,13 @@
 package gr3.gr3_casestudy4.controller;
 
 import gr3.gr3_casestudy4.model.Singer;
+import gr3.gr3_casestudy4.model.Song;
 import gr3.gr3_casestudy4.service.SingerService;
+import gr3.gr3_casestudy4.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +20,8 @@ import java.util.Optional;
 public class SingerController {
     @Autowired
     private SingerService singerService;
+    @Autowired
+    private SongService songService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<Singer>> findAll(){
@@ -41,5 +48,16 @@ public class SingerController {
         singer.setStatus(0);
         singerService.save(singer);
         return new  ResponseEntity<>(singer,HttpStatus.OK);
+    }
+//    @GetMapping("/{id}/songs")
+//    public ResponseEntity<Page<Song>> findAllSong(@RequestParam Long id) {
+//        Page<Song> songs = songService.findAllBySinger(id);
+//        return new ResponseEntity<>(songs, HttpStatus.OK);
+//    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Singer>> findAllOrderByName(@PageableDefault(value = 6)Pageable pageable,@RequestParam String q) {
+        Page<Singer> singers = singerService.findAllByNameContaining(q, pageable);
+        return new ResponseEntity<>(singers, HttpStatus.OK);
     }
 }
