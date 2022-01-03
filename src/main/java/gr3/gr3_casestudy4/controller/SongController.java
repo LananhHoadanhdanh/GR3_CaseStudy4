@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class SongController {
         return new ResponseEntity<>(song.get(),HttpStatus.OK);
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Song> updateSong(@PathVariable Long id,@RequestBody Song song){
         LocalDateTime time=LocalDateTime.now();
         song.setCreateTime(time);
@@ -50,12 +52,14 @@ public class SongController {
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Song> createSong(@RequestBody Song song){
         song.setCreateTime(LocalDateTime.now());
         songService.save(song);
         return new ResponseEntity<>(song,HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Song> deleteSong(@PathVariable Long id){
         songService.remove(id);
         return new ResponseEntity<>(songService.findById(id).get(),HttpStatus.OK);

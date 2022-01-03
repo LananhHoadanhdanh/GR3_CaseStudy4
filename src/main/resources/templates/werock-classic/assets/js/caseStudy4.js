@@ -1,47 +1,13 @@
 function homePage() {
     document.getElementById("ajaxArea").innerHTML = `
-    <section id="home-slider">
-    </section>
+    <section id="home-slider"></section>
     <div class="rockPlayerHolder"></div>
-    <section id="albums">
-        <div class="container">
-            <h1>Latest Playlist</h1>
-            <div class="top-carouselnav">
-                <a href="#" class="prev-album"><span class="fa fa-caret-left"></span></a>
-                <a href="#" class="next-album"><span class="fa fa-caret-right"></span></a>
-            </div>
-            <div class="albums-carousel">
-                <div class="album">
-                    <img src="assets/img/artist/keiko.png" alt=""/>
-                    <div class="hover">
-                        <ul>
-                            <li><a href="album.html"><span class="fa fa-search"></span></a></li>
-                            <li><a href="album-detail.html"><span class="fa fa-link"></span></a></li>
-                        </ul>
-                        <h3>Lorem Artist</h3>
-                        <h2>Album</h2>
-                    </div>
-                </div><!--\\\\album-->
-            </div>
-        </div>
-    </section>
+    <section id="albums"></section>
     <div class="clearfix"></div>
     <section id="updates">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-7 col-sm-6" id="latest_song">
-                    <h1>Latest songs</h1>
-                    <div class="news-feed">
-                        <img src="assets/img/news/1.jpg" alt="dummy">
-                        <a href="#">Wale's Own Comeback Inspired RGIII Anthem 'No Pain No Gain'</a>
-                        <ul>
-                            <li>Kalafina</li>
-                            <li><span class="fa fa-comment"></span>5 comments</li>
-                        </ul>
-                        <p>'I use uncertainty as motivation and hopefully Rob uses it as motivation as well,' Wale says
-                            of track written for Redskins quarterback documentary.</p>
-                    </div><!--\\\\latest news-->
-                </div><!--latest songs-->
+                <div class="col-lg-8 col-md-7 col-sm-6" id="latest_song"></div><!--latest songs-->
                 <div class="col-lg-4 col-md-5 col-sm-6" id="latest_artists">
                     <h1>Latest artists</h1>
                         <a href="artist-detail.html"><img src="assets/img/artist/keiko.png" alt=""/></a>
@@ -50,11 +16,14 @@ function homePage() {
         </div>
     </section>`;
     home_slider();
-    home_playlist()
+    home_playlist();
+    home_songs();
 }
 
 function home_slider() {
-    let text = `<div class="container">
+    console.log("hahahaha");
+    document.getElementById("home-slider").innerHTML = `
+        <div class="container">
             <div class="home-inner">
                 <div id="homeSliderNav" class="slider-nav">
                     <a id="home-prev" href="#" class="prev fa fa-chevron-left"></a>
@@ -86,8 +55,7 @@ function home_slider() {
                     </ul>
                 </div>
             </div>
-        </div>`
-    document.getElementById("home-slider").innerHTML = text;
+        </div>`;
 }
 
 function home_playlist() {
@@ -96,6 +64,63 @@ function home_playlist() {
         url: "http://localhost:8080/playlists",
         success: function (playlists) {
             console.log(playlists);
+            let html = `
+        <div class="container">
+            <h1>Latest Playlist</h1>
+            <div class="top-carouselnav">
+                <a href="#" class="prev-album"><span class="fa fa-caret-left"></span></a>
+                <a href="#" class="next-album"><span class="fa fa-caret-right"></span></a>
+            </div>`
+            for (let i = 0; i < playlists.length; i++) {
+                html += `<div class="albums-carousel">
+                            <div class="album">
+                                <img src="assets/img/artist/keiko.png" alt=""/>
+                                <div class="hover">
+                                    <ul>
+                                        <li><a href="#"><span class="fa fa-search"></span></a></li>
+                                    </ul>
+                                    <h3>${playlists[i].songs.length} bài hát</h3>
+                                    <h2>${playlists[i].name}</h2>
+                                </div>
+                            </div><!--\\\\album-->
+                        </div>`
+            }
+            html += `</div>`
+            document.getElementById("albums").innerHTML = html;
+        }
+    })
+}
+
+function home_songs() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/songs",
+        success: function (songs) {
+            console.log(songs.content);
+            let play = `<div class="player">
+                            <div class="pl"></div>
+                            <div class="title"><marquee class="mar" direction="left"></marquee></div>
+                            <div class="artist"></div>
+                            <div class="cover"></div>
+                            <div class="controls">
+                                <div class="rew"></div>
+                                <div class="play"></div>
+                                <div class="pause"></div>
+                                <div class="fwd"></div>
+                            </div>
+                            <div class="volume"></div>
+                            <div class="tracker"></div>
+                        </div>
+                        <ul class="playlist hidden">
+                            <li audiourl="assets\\audio\\A-Thousand-Year-Christina-peri.mp3" cover="assets/img/artist/Christina Perri.jpg" artist="Christina Perri">A Thousand Year</li>
+                        </ul>`
+            let html = `<h1>Latest songs</h1>`
+            for (let i = 0; i < songs.content.length; i++) {
+                html += `<audio controls loop>
+                            <source src="${songs.content[i].mp3file}" type="audio/mpeg">
+                        </audio>`
+            }
+            document.getElementById("latest_song").innerHTML = play;
         }
     })
 }

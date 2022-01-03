@@ -7,6 +7,7 @@ import gr3.gr3_casestudy4.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -35,6 +36,7 @@ public class PlaylistController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Playlist> create(@RequestBody Playlist playlist) {
         playlist.setStatus(1);
         playlistService.save(playlist);
@@ -62,6 +64,7 @@ public class PlaylistController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Playlist> deletePlaylist(@PathVariable Long id) {
         playlistService.remove(id);
         return new ResponseEntity<>(playlistService.findById(id).get(), HttpStatus.OK);

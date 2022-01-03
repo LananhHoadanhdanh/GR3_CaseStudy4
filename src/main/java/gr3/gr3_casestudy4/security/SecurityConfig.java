@@ -71,24 +71,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/**");
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
         http.authorizeRequests()
-                .antMatchers("/login", "/register","/songs","/songs/**",
-                        "/singers/{id}/songs","/playlists",
-                        "/playlists/{id}"
+                .antMatchers("/login", "/register",
+                        "/songs/**", "/singers/**", "/playlists/**"
                         ).permitAll()
-//                .antMatchers("/singers").access("hasRole('ROLE_USER')")
-                .antMatchers("/playlist/**").access("hasRole('ROLE_USER')")
+                .antMatchers("/users/**").access("hasRole('ROLE_USER')")
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-
-//                .antMatchers(HttpMethod.GET
-//                        ).access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-//                .antMatchers(HttpMethod.DELETE, "/categories",
-//                        "/typeOfQuestions",
-//                        "/questions",
-//                        "/answers",
-//                        "/quizzes",
-//                        "/hello").access("hasRole('ROLE_ADMIN')")
-//                .antMatchers(HttpMethod.PUT, "/users")
-//                .access("hasRole('ROLE_USER')")
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
