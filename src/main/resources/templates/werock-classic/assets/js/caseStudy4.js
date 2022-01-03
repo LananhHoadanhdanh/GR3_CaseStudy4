@@ -53,7 +53,26 @@ function formLogin() {
 }
 
 function login() {
-
+    let user = {
+        "username": document.getElementById("username").value,
+        "password": document.getElementById("password").value
+    }
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        url: "http://localhost:8080/login",
+        data: JSON.stringify(user),
+        success: function (user) {
+            console.log(user)
+            localStorage.setItem("token", user.accessToken)
+            homePage()
+        },
+        error: function (error) {
+        }
+    });
 }
 
 function formRegister() {
@@ -115,7 +134,7 @@ function formRegister() {
                 </div>
             </div>
         </section>
-        <br>`;
+        <br> <br>`;
     document.getElementById("ajaxArea").innerHTML = form;
 }
 

@@ -17,9 +17,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -79,6 +83,16 @@ public class UserController {
             roles1.add(role1);
             user.setRoles(roles1);
         }
+
+//        String fileName = avt.getOriginalFilename();
+//        try {
+//            FileCopyUtils.copy(avt.getBytes(),
+//                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\static\\images" + fileName)); // coppy ảnh từ ảnh nhận được vào thư mục quy định,
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+        user.setAvatar("images/ava_default.png");
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
         userService.save(user);
