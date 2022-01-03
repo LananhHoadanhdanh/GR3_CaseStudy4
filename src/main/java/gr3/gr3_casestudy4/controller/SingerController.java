@@ -59,7 +59,7 @@ public class SingerController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Singer>> findAllOrderByName(@PageableDefault(value = 6)Pageable pageable, @RequestParam String q) {
+    public ResponseEntity<Page<Singer>> findByName(@PageableDefault(value = 6)Pageable pageable, @RequestParam String q) {
         Page<Singer> singers = singerService.findAllByNameContaining(q, pageable);
         return new ResponseEntity<>(singers, HttpStatus.OK);
     }
