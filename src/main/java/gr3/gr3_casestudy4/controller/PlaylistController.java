@@ -50,5 +50,14 @@ public class PlaylistController {
         playlistService.save(playlist.get());
         return new ResponseEntity<>(playlist.get(),HttpStatus.OK);
     }
+    @PutMapping("/{id}/removeSong")
+    public ResponseEntity<Playlist> deleteSong(@PathVariable Long id, Long idSong){
+        Optional<Playlist> playlist = playlistService.findById(id);
+        Set<Song> songs = playlist.get().getSongs();
+        songs.remove(songService.findById(idSong).get());
+        playlist.get().setSongs(songs);
+        playlistService.save(playlist.get());
+        return new ResponseEntity<>(playlist.get(),HttpStatus.OK);
+    }
 
 }
