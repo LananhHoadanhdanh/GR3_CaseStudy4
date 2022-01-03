@@ -1,9 +1,12 @@
 package gr3.gr3_casestudy4.controller;
 
 import gr3.gr3_casestudy4.model.JwtResponse;
+import gr3.gr3_casestudy4.model.Playlist;
 import gr3.gr3_casestudy4.model.Role;
 import gr3.gr3_casestudy4.model.User;
+import gr3.gr3_casestudy4.service.PlaylistService;
 import gr3.gr3_casestudy4.service.RoleService;
+import gr3.gr3_casestudy4.service.SongService;
 import gr3.gr3_casestudy4.service.UserService;
 import gr3.gr3_casestudy4.service.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,12 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PlaylistService playlistService;
+
+    @Autowired
+    private SongService songService;
 
 
     @GetMapping("/users")
@@ -139,4 +148,11 @@ public class UserController {
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @GetMapping("users/{id}/playlists")
+    public ResponseEntity<Iterable<Playlist>> findPlaylistByUser(@PathVariable Long id) {
+        Iterable<Playlist> playlists = playlistService.findByUser(id);
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
 }

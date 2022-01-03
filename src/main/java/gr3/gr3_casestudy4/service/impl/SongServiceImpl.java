@@ -44,6 +44,12 @@ public class SongServiceImpl implements SongService {
     public Page<Song> findAllBySinger(Singer singer, Pageable pageable) {
         return songRepository.findAllBySinger(singer,pageable);
     }
+
+    @Override
+    public Iterable<Song> findByUser(Long id) {
+        return songRepository.findByUser(id);
+    }
+
     @Override
     public Page<Song> findAll(Pageable pageable) {
         return songRepository.findAll(pageable);
@@ -58,4 +64,6 @@ public class SongServiceImpl implements SongService {
     public Page<Song> findAllByOrderByCreateTimeDesc(Pageable pageable) {
         return songRepository.findAllByOrderByCreateTimeDesc(pageable);
     }
+
+
 }

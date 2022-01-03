@@ -12,6 +12,5 @@ public interface SongService extends GeneralService<Song> {
     Page<Song> findAllByOrderByCreateTimeDesc(Pageable pageable);
     void remove(Long id);
     Page<Song> findAllBySinger(Singer singer, Pageable pageable);
-
-
+    Iterable<Song> findByUser(Long id);
 }
