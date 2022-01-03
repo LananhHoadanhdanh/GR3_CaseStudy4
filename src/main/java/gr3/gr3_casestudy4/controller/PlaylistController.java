@@ -26,5 +26,11 @@ public class PlaylistController {
         Optional<Playlist> playlist=playlistService.findById(id);
         return new ResponseEntity<>(playlist.get(),HttpStatus.OK);
     }
+    @PostMapping("")
+    public ResponseEntity<Playlist> create(@RequestBody Playlist playlist){
+        playlist.setStatus(1);
+        playlistService.save(playlist);
+        return new ResponseEntity<>(playlist,HttpStatus.OK);
+    }
 
 }
