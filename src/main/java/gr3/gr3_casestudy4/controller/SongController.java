@@ -59,7 +59,4 @@ public class SongController {
         songService.remove(id);
         return new ResponseEntity<>(songService.findById(id).get(),HttpStatus.OK);
     }
-
-
-
 }
