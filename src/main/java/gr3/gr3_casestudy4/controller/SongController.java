@@ -1,7 +1,10 @@
 package gr3.gr3_casestudy4.controller;
 
+import gr3.gr3_casestudy4.model.CommentSong;
 import gr3.gr3_casestudy4.model.Song;
+import gr3.gr3_casestudy4.service.CommentSongService;
 import gr3.gr3_casestudy4.service.SongService;
+import gr3.gr3_casestudy4.service.impl.CommentSongImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +19,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/songs")
 public class SongController {
-
+    @Autowired
+    CommentSongService commentSongService;
     @Autowired
     SongService songService;
 
@@ -58,5 +62,11 @@ public class SongController {
     public ResponseEntity<Song> deleteSong(@PathVariable Long id){
         songService.remove(id);
         return new ResponseEntity<>(songService.findById(id).get(),HttpStatus.OK);
+    }
+    @PostMapping("/{id}/comment")
+    public ResponseEntity<CommentSong> createComment(@RequestBody CommentSong commentSong){
+        commentSong.setTime(LocalDateTime.now());
+        commentSongService.save(commentSong);
+        return new ResponseEntity<>(commentSong,HttpStatus.OK);
     }
 }
