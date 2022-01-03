@@ -75,6 +75,4 @@ public class PlaylistController {
         Iterable<Playlist> playlists = playlistService.findAllByNameContaining(q);
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
-
-
 }
