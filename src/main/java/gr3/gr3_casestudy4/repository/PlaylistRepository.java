@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
+    Iterable<Playlist> findAllByNameContaining(String name);
+
 }

@@ -36,4 +36,9 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlist.setId(id);
         playlistRepository.save(playlist);
     }
+
+    @Override
+    public Iterable<Playlist> findAllByNameContaining(String name) {
+        return playlistRepository.findAllByNameContaining(name);
+    }
 }

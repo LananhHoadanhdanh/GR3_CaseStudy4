@@ -48,21 +48,29 @@ public class PlaylistController {
         songs.add(songService.findById(idSong).get());
         playlist.get().setSongs(songs);
         playlistService.save(playlist.get());
-        return new ResponseEntity<>(playlist.get(),HttpStatus.OK);
+        return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
     }
+
     @PutMapping("/{id}/removeSong")
-    public ResponseEntity<Playlist> deleteSong(@PathVariable Long id, Long idSong){
+    public ResponseEntity<Playlist> deleteSong(@PathVariable Long id, Long idSong) {
         Optional<Playlist> playlist = playlistService.findById(id);
         Set<Song> songs = playlist.get().getSongs();
         songs.remove(songService.findById(idSong).get());
         playlist.get().setSongs(songs);
         playlistService.save(playlist.get());
-        return new ResponseEntity<>(playlist.get(),HttpStatus.OK);
+        return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Playlist> deletePlaylist(@PathVariable Long id){
+    public ResponseEntity<Playlist> deletePlaylist(@PathVariable Long id) {
         playlistService.remove(id);
-        return new ResponseEntity<>(playlistService.findById(id).get(),HttpStatus.OK);
+        return new ResponseEntity<>(playlistService.findById(id).get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<Playlist>> findAllByContaining(String q) {
+        Iterable<Playlist> playlists = playlistService.findAllByNameContaining(q);
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
 
