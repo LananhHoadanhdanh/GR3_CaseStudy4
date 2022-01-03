@@ -21,7 +21,7 @@ public class SingerController {
     @Autowired
     private SingerService singerService;
     @Autowired
-    private SongService songService;
+    SongService songService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<Singer>> findAll(){
@@ -49,11 +49,12 @@ public class SingerController {
         singerService.save(singer);
         return new  ResponseEntity<>(singer,HttpStatus.OK);
     }
-//    @GetMapping("/{id}/songs")
-//    public ResponseEntity<Page<Song>> findAllSong(@RequestParam Long id) {
-//        Page<Song> songs = songService.findAllBySinger(id);
-//        return new ResponseEntity<>(songs, HttpStatus.OK);
-//    }
+    @GetMapping("/{id}/songs")
+    public ResponseEntity<Page<Song>> findAllSong(@PathVariable Long id,@PageableDefault(value = 6)Pageable pageable) {
+        Optional<Singer> singer=singerService.findById(id);
+        Page<Song> songs=songService.findAllBySinger(singer.get(),pageable);
+        return new ResponseEntity<>(songs,HttpStatus.OK);
+    }
 
     @GetMapping("/search")
     public ResponseEntity<Page<Singer>> findAllOrderByName(@PageableDefault(value = 6)Pageable pageable,@RequestParam String q) {
