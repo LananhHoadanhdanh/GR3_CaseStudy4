@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/singers")
+@CrossOrigin("*")
 public class SingerController {
     @Autowired
     private SingerService singerService;
@@ -61,4 +62,5 @@ public class SingerController {
         Page<Singer> singers = singerService.findAllByNameContaining(q, pageable);
         return new ResponseEntity<>(singers, HttpStatus.OK);
     }
+
 }
