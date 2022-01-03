@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/songs")
+@CrossOrigin("*")
 public class SongController {
     @Autowired
     CommentSongService commentSongService;

@@ -1,5 +1,6 @@
 package gr3.gr3_casestudy4.service.impl;
 
+import gr3.gr3_casestudy4.model.Singer;
 import gr3.gr3_casestudy4.model.Song;
 import gr3.gr3_casestudy4.repository.SongRepository;
 import gr3.gr3_casestudy4.service.SingerService;
@@ -39,10 +40,11 @@ public class SongServiceImpl implements SongService {
       songRepository.save(song);
     }
 
-//    @Override
-//    public Page<Song> findAllBySinger(Long id) {
-//        return songRepository.findAllBySinger(id);
-//    }
+    @Override
+    public Page<Song> findAllBySinger(Singer singer, Pageable pageable) {
+        return songRepository.findAllBySinger(singer,pageable);
+    }
+
 
     @Override
     public Page<Song> findAll(Pageable pageable) {

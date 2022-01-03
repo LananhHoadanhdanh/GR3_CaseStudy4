@@ -60,6 +60,14 @@ public class Song {
         this.singer = singer;
         this.user = user;
     }
+    public Song(String name, String description, String lyrics, Singer singer, User user,String image) {
+        this.name = name;
+        this.description = description;
+        this.lyrics = lyrics;
+        this.singer = singer;
+        this.user = user;
+        this.image=image;
+    }
 
     public Long getId() {
         return id;
