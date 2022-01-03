@@ -25,6 +25,12 @@ public class Playlist {
     public Playlist() {
     }
 
+    public Playlist(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
+
+
     public Playlist(String name, User user, Set<Song> songs) {
         this.name = name;
         this.user = user;
@@ -66,7 +72,6 @@ public class Playlist {
     public Set<Song> getSongs() {
         return songs;
     }
-
     public void setSongs(Set<Song> songs) {
         this.songs = songs;
     }
