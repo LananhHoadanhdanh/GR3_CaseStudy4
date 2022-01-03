@@ -25,12 +25,9 @@ public class SingerController {
     @Autowired
     SongService songService;
 
-    @GetMapping("")
-    public ResponseEntity<Iterable<Singer>> findAll(){
-        List<Singer> singers = (List<Singer>) singerService.findAll();
-        if (singers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+    @GetMapping
+    public ResponseEntity<Page<Singer>> findAll(@PageableDefault(value = 6)Pageable pageable){
+        Page<Singer> singers=singerService.findAll(pageable);
         return new ResponseEntity<>(singers, HttpStatus.OK);
     }
 

@@ -6,5 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface SingerService extends GeneralService<Singer>{
     Page<Singer> findAllByNameContaining(String name, Pageable pageable);
+    Page<Singer> findAll(Pageable pageable);
 
 }

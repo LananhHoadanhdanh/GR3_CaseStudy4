@@ -30,6 +30,7 @@ public class SongController {
         Page<Song> songs=songService.findAll(pageable);
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Song> findOne(@PathVariable Long id){
         Optional<Song> song=songService.findById(id);

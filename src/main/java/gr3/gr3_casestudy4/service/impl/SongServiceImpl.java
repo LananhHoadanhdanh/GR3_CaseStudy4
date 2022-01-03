@@ -44,8 +44,6 @@ public class SongServiceImpl implements SongService {
     public Page<Song> findAllBySinger(Singer singer, Pageable pageable) {
         return songRepository.findAllBySinger(singer,pageable);
     }
-
-
     @Override
     public Page<Song> findAll(Pageable pageable) {
         return songRepository.findAll(pageable);

@@ -1,6 +1,7 @@
 package gr3.gr3_casestudy4.service.impl;
 
 import gr3.gr3_casestudy4.model.Singer;
+import gr3.gr3_casestudy4.model.Song;
 import gr3.gr3_casestudy4.repository.SingerRepository;
 import gr3.gr3_casestudy4.service.SingerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class SingerServiceImpl implements SingerService {
 
     @Override
     public Iterable<Singer> findAll() {
-        return singerRepository.findAll();
+        return null;
     }
 
     @Override
@@ -32,5 +33,10 @@ public class SingerServiceImpl implements SingerService {
     @Override
     public Page<Singer> findAllByNameContaining(String name, Pageable pageable) {
         return singerRepository.findAllByNameContaining(name,pageable);
+    }
+
+    @Override
+    public Page<Singer> findAll(Pageable pageable) {
+        return singerRepository.findAll(pageable);
     }
 }
