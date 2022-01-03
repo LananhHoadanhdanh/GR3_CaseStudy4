@@ -91,7 +91,7 @@ public class UserController {
 //        } catch (IOException ex) {
 //            ex.printStackTrace();
 //        }
-        user.setAvatar("images/ava_default.png");
+        user.setAvatar("assets/img/ava_default.png");
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));

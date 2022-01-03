@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,11 +39,14 @@ public class SingerController {
         return new ResponseEntity<>(singer.get(),HttpStatus.OK);
     }
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Singer> create(@RequestBody Singer singer){
         singerService.save(singer);
         return new ResponseEntity<>(singer,HttpStatus.CREATED);
     }
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Singer> delete(@PathVariable Long id){
         Singer singer = singerService.findById(id).get();
         singer.setStatus(0);
@@ -56,7 +60,7 @@ public class SingerController {
 //    }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Singer>> findAllOrderByName(@PageableDefault(value = 6)Pageable pageable,@RequestParam String q) {
+    public ResponseEntity<Page<Singer>> findAllOrderByName(@PageableDefault(value = 6)Pageable pageable, @RequestParam String q) {
         Page<Singer> singers = singerService.findAllByNameContaining(q, pageable);
         return new ResponseEntity<>(singers, HttpStatus.OK);
     }

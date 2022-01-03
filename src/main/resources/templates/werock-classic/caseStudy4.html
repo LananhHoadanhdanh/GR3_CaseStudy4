@@ -40,7 +40,7 @@
     <script defer src="assets/js/jquery.js"></script>
 
 </head>
-<body onload="formLogin()">
+<body>
 <!--=================================
 	Header
 	=================================-->
@@ -259,7 +259,88 @@ JPlayer (Audio Player)
 
 
 <div id="ajaxArea" class="pageContentArea">
-
+    <section id="home-slider">
+        <div class="container">
+            <div class="home-inner">
+                <div id="homeSliderNav" class="slider-nav">
+                    <a id="home-prev" href="#" class="prev fa fa-chevron-left"></a>
+                    <a id="home-next" href="#" class="next fa fa-chevron-right"></a>
+                </div><!--sliderNav-->
+                <div id="flex-home" class="flexslider" data-animation="slide" data-animationSpeed="1000"
+                     data-autoPlay="true" data-slideshowSpeed="7000">
+                    <ul class="slides">
+                        <li><img src="assets/img/artist/keiko.png" alt="">
+                            <div class="flex-caption">
+                                <h2>Kubota Keiko</h2>
+                            </div>
+                        </li>
+                        <li><img src="assets/img/artist/lisa.png" alt="">
+                            <div class="flex-caption">
+                                <h2>LiSA</h2>
+                            </div>
+                        </li>
+                        <li><img src="assets/img/artist/taylor.png" alt="">
+                            <div class="flex-caption">
+                                <h2>Taylor Swift</h2>
+                            </div>
+                        </li>
+                        <li><img src="assets/img/artist/rin.png" alt="">
+                            <div class="flex-caption">
+                                <h2>Kagamine Rin & Len</h2>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="rockPlayerHolder"></div>
+    <section id="albums">
+        <div class="container">
+            <h1>Latest Playlist</h1>
+            <div class="top-carouselnav">
+                <a href="#" class="prev-album"><span class="fa fa-caret-left"></span></a>
+                <a href="#" class="next-album"><span class="fa fa-caret-right"></span></a>
+            </div>
+            <div class="albums-carousel">
+                <div class="album">
+                    <img src="assets/img/artist/keiko.png" alt=""/>
+                    <div class="hover">
+                        <ul>
+                            <li><a href="album.html"><span class="fa fa-search"></span></a></li>
+                            <li><a href="album-detail.html"><span class="fa fa-link"></span></a></li>
+                        </ul>
+                        <h3>Lorem Artist</h3>
+                        <h2>Album</h2>
+                    </div>
+                </div><!--\\album-->
+            </div>
+        </div>
+    </section>
+    <div class="clearfix"></div>
+    <section id="updates">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-7 col-sm-6">
+                    <h1>Latest songs</h1>
+                    <div class="news-feed">
+                        <img src="assets/img/news/1.jpg" alt="dummy">
+                        <a href="#">Wale's Own Comeback Inspired RGIII Anthem 'No Pain No Gain'</a>
+                        <ul>
+                            <li>4 hours ago</li>
+                            <li><span class="fa fa-comment"></span>5 comments</li>
+                        </ul>
+                        <p>'I use uncertainty as motivation and hopefully Rob uses it as motivation as well,' Wale says
+                            of track written for Redskins quarterback documentary.</p>
+                    </div><!--\\latest news-->
+                </div><!--latest songs-->
+                <div class="col-lg-4 col-md-5 col-sm-6">
+                    <h1>Latest artists</h1>
+                    <a href="artist-detail.html"><img src="assets/img/artist/keiko.png" alt=""/></a>
+                </div><!--latest artists-->
+            </div>
+        </div>
+    </section>
 </div>
 
 
