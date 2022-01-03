@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background-size: cover;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: 1px solid;
+        }
+
+        td, tr, th {
+            border: 1px solid;
+        }
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function findAll() {
+            $.ajax({
+                type: "Get",
+                url: "http://localhost:8080/singers",
+                success: function (singers) {
+                    console.log(singers)
+                    display(singers.content)
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            })
+        }
+
+        function showCreate() {
+            let str = `<div enctype="multipart/form-data"><input type="text" id="name"><br>
+   <br>
+    <input type="text" id="description">  <br>
+    <input type="number" id="user">  <br>
+
+    <div>
+        <label>Image</label>
+       <input id="avatar" type="file" name="avatar" />
+    </div>
+ <button onclick="createsinger()">thêm</button></div>`
+            document.getElementById("res").innerHTML = str
+        }
+        async function createsinger() {
+            let formData = new FormData();
+            formData.append("file", avatar.files[0]);
+            let singer = {
+                name: document.getElementById("name").value,
+                description: document.getElementById("description").value,
+                user: document.getElementById("user").value
+            }
+            console.log(singer)
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                url: "http://localhost:8080/singers",
+                data: JSON.stringify(singer),
+                success: function (singer) {
+                    console.log(singer)
+                },
+                error: function (error) {
+                    alert(error)
+                }
+            })
+        }
+
+        function display(singers) {
+            let str = "";
+            for (let i = 0; i < singers.length; i++) {
+                str +=
+                    ` <img src="../static/img/${singers[i].avatar}" height="150"width="150" alt=""/><p>${singers[i].name}</p>`
+            }
+            document.getElementById("res").innerHTML = str
+        }
+
+
+    </script>
+
+
+</head>
+<body>
+<center>
+
+    <button onclick="findAll()">
+        Show List
+    </button>
+    <button onclick="showCreate()">create</button>
+
+</center>
+
+<center>
+    <div id="res">
+    </div>
+</center>
+</body>
+</html>
