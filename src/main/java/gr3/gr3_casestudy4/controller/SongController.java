@@ -54,10 +54,10 @@ public class SongController {
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
     @PostMapping("")
-    public ResponseEntity<Song> createSong(@RequestBody Song song, @RequestParam MultipartFile image1){
-        String fileName = image1.getOriginalFilename();
+    public ResponseEntity<Song> createSong(@RequestBody Song song,@RequestParam MultipartFile fileupload){
+        String fileName = fileupload.getOriginalFilename();
         try {
-            FileCopyUtils.copy(image1.getBytes(),
+            FileCopyUtils.copy(fileupload.getBytes(),
                     new File("D:\\case_module4\\" + fileName));
         } catch (IOException ex) {
             ex.printStackTrace();

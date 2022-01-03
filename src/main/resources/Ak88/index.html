@@ -34,21 +34,46 @@
         }
 
         function showCreate() {
-            let str = `  <input type="text" name="name">  <br>
-    <input type="text" name="description">
+            let str = `<div enctype="multipart/form-data"><input type="text" id="name">  <br>
+    <input type="text" id="description">
    <br>
-    <input type="text" name="lyrics">  <br>
-    <input type="number" name="singer">  <br>
-    <input type="number" name="user">  <br>
+    <input type="text" id="lyrics">  <br>
+    <input type="number" id="singer">  <br>
+    <input type="number" id="user">  <br>
+
     <div>
         <label>Image</label>
-        <input type="file" name="image1"/>
+       <input id="fileupload" type="file" name="fileupload" />
     </div>
- <button onclick="createSong()"> thêm</button>`
+ <button onclick="createSong()"> thêm</button></div>`
             document.getElementById("res").innerHTML = str
         }
-        function createSong(){
-            $.ajax
+        async function createSong() {
+            let formData = new FormData();
+            formData.append("file", fileupload.files[0]);
+            let song = {
+                name: document.getElementById("name").value,
+                description: document.getElementById("description").value,
+                singer: document.getElementById("singer").value,
+                user: document.getElementById("user").value,
+                lyrics: document.getElementById("lyrics").value,
+            }
+            console.log(song)
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                url: "http://localhost:8080/songs",
+                data: JSON.stringify(song),
+                success: function (song) {
+                    console.log(song)
+                },
+                error: function (error) {
+                    alert("mẹ")
+                }
+            })
         }
 
         function display(songs) {
