@@ -1,9 +1,6 @@
 package gr3.gr3_casestudy4.controller;
 
-import gr3.gr3_casestudy4.model.JwtResponse;
-import gr3.gr3_casestudy4.model.Playlist;
-import gr3.gr3_casestudy4.model.Role;
-import gr3.gr3_casestudy4.model.User;
+import gr3.gr3_casestudy4.model.*;
 import gr3.gr3_casestudy4.service.PlaylistService;
 import gr3.gr3_casestudy4.service.RoleService;
 import gr3.gr3_casestudy4.service.SongService;
@@ -155,4 +152,9 @@ public class UserController {
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
+    @GetMapping("users/{id}/songs")
+    public ResponseEntity<Iterable<Song>> findSongByUser(@PathVariable Long id) {
+        Iterable<Song> songs = songService.findByUser(id);
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
 }
