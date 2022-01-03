@@ -9,6 +9,8 @@ public class Singer {
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
+
+    @Column(length = 10000)
     private String description;
     private String avatar;
     private int status;
