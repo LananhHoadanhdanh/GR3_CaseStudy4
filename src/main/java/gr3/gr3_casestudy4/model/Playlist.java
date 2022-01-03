@@ -72,7 +72,6 @@ public class Playlist {
     public Set<Song> getSongs() {
         return songs;
     }
-
     public void setSongs(Set<Song> songs) {
         this.songs = songs;
     }
