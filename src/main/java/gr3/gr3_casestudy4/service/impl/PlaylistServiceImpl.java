@@ -1,6 +1,7 @@
 package gr3.gr3_casestudy4.service.impl;
 
 import gr3.gr3_casestudy4.model.Playlist;
+import gr3.gr3_casestudy4.model.Song;
 import gr3.gr3_casestudy4.repository.PlaylistRepository;
 import gr3.gr3_casestudy4.service.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,14 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void save(Playlist playlist) {
+        playlistRepository.save(playlist);
+    }
+
+    @Override
+    public void remove(Long id) {
+        Playlist playlist = playlistRepository.findById(id).get();
+        playlist.setStatus(0);
+        playlist.setId(id);
         playlistRepository.save(playlist);
     }
 }
