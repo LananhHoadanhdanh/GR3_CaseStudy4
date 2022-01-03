@@ -39,6 +39,11 @@ public class SongServiceImpl implements SongService {
       songRepository.save(song);
     }
 
+//    @Override
+//    public Page<Song> findAllBySinger(Long id) {
+//        return songRepository.findAllBySinger(id);
+//    }
+
     @Override
     public Page<Song> findAll(Pageable pageable) {
         return songRepository.findAll(pageable);

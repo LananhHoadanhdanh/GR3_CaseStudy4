@@ -4,6 +4,8 @@ import gr3.gr3_casestudy4.model.Singer;
 import gr3.gr3_casestudy4.repository.SingerRepository;
 import gr3.gr3_casestudy4.service.SingerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,16 +21,16 @@ public class SingerServiceImpl implements SingerService {
 
     @Override
     public Optional<Singer> findById(Long id) {
-        return Optional.empty();
+        return singerRepository.findById(id);
     }
 
     @Override
     public void save(Singer singer) {
-
+        singerRepository.save(singer);
     }
 
     @Override
-    public void remove(Long id) {
-
+    public Page<Singer> findAllByNameContaining(String name, Pageable pageable) {
+        return singerRepository.findAllByNameContaining(name,pageable);
     }
 }
