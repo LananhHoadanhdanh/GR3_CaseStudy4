@@ -46,7 +46,7 @@ public class SingerController {
         String nameFile=file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),
-                    new File("D:\\module4\\GR3_CaseStudy4\\src\\main\\resources\\Ak88\\update\\" + nameFile));
+                    new File("D:\\module4\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\artist\\" + nameFile));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
