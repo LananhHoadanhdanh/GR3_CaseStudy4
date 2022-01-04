@@ -34,7 +34,7 @@
         }
 
         function showCreate() {
-            let str = `<div enctype="multipart/form-data"><input type="text" id="name">  <br>
+            let str = `<form enctype="multipart/form-data"><input type="text" id="name">  <br>
     <input type="text" id="description">
    <br>
     <input type="text" id="lyrics">  <br>
@@ -45,9 +45,10 @@
         <label>Image</label>
        <input id="fileupload" type="file" name="fileupload" />
     </div>
- <button onclick="createSong()"> thêm</button></div>`
+ <button onclick="createSong()"> thêm</button></form>`
             document.getElementById("res").innerHTML = str
         }
+
         async function createSong() {
             let formData = new FormData();
             formData.append("file", fileupload.files[0]);
@@ -93,9 +94,9 @@
 <body>
 <center>
 
-    <button onclick="findAll()">
-        Show List
-    </button>
+    <!--    <button onclick="findAll()">-->
+    <!--        Show List-->
+    <!--    </button>-->
     <button onclick="showCreate()">create</button>
 
 </center>

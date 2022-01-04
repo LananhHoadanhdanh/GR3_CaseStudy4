@@ -11,8 +11,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +41,17 @@ public class SingerController {
         return new ResponseEntity<>(singer.get(),HttpStatus.OK);
     }
     @PostMapping("")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Singer> create(@RequestBody Singer singer){
+//    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Singer> create( Singer singer,  MultipartFile file){
+        String nameFile=file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("D:\\module4\\GR3_CaseStudy4\\src\\main\\resources\\Ak88\\update\\" + nameFile));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        singer.setStatus(1);
+        singer.setAvatar(nameFile);
         singerService.save(singer);
         return new ResponseEntity<>(singer,HttpStatus.CREATED);
     }
