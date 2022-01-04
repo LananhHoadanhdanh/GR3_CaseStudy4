@@ -12,7 +12,6 @@ public class Song {
     private String name;
     private String description;
     private String mp3file;
-    private String image;
     private int status;
     private LocalDateTime createTime;
 
@@ -28,11 +27,10 @@ public class Song {
     public Song() {
     }
 
-    public Song(String name, String description, String mp3file, String image, int status, LocalDateTime createTime, User user, String lyrics, Singer singer) {
+    public Song(String name, String description, String mp3file, int status, LocalDateTime createTime, User user, String lyrics, Singer singer) {
         this.name = name;
         this.description = description;
         this.mp3file = mp3file;
-        this.image = image;
         this.status = status;
         this.createTime = createTime;
         this.user = user;
@@ -40,12 +38,11 @@ public class Song {
         this.singer = singer;
     }
 
-    public Song(Long id, String name, String description, String mp3file, String image, int status, LocalDateTime createTime, User user, String lyrics, Singer singer) {
+    public Song(Long id, String name, String description, String mp3file, int status, LocalDateTime createTime, User user, String lyrics, Singer singer) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.mp3file = mp3file;
-        this.image = image;
         this.status = status;
         this.createTime = createTime;
         this.user = user;
@@ -60,14 +57,7 @@ public class Song {
         this.singer = singer;
         this.user = user;
     }
-    public Song(String name, String description, String lyrics, Singer singer, User user,String image) {
-        this.name = name;
-        this.description = description;
-        this.lyrics = lyrics;
-        this.singer = singer;
-        this.user = user;
-        this.image=image;
-    }
+
 
     public Long getId() {
         return id;
@@ -99,14 +89,6 @@ public class Song {
 
     public void setMp3file(String mp3file) {
         this.mp3file = mp3file;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public int getStatus() {
