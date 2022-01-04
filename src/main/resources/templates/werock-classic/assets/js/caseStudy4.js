@@ -1,103 +1,362 @@
 function homePage() {
     document.getElementById("ajaxArea").innerHTML = `
-    <section id="home-slider">
-    </section>
-    <div class="rockPlayerHolder"></div>
-    <section id="albums">
-        <div class="container">
-            <h1>Latest Playlist</h1>
-            <div class="top-carouselnav">
-                <a href="#" class="prev-album"><span class="fa fa-caret-left"></span></a>
-                <a href="#" class="next-album"><span class="fa fa-caret-right"></span></a>
-            </div>
-            <div class="albums-carousel">
-                <div class="album">
-                    <img src="assets/img/artist/keiko.png" alt=""/>
-                    <div class="hover">
-                        <ul>
-                            <li><a href="album.html"><span class="fa fa-search"></span></a></li>
-                            <li><a href="album-detail.html"><span class="fa fa-link"></span></a></li>
-                        </ul>
-                        <h3>Lorem Artist</h3>
-                        <h2>Album</h2>
-                    </div>
-                </div><!--\\\\album-->
-            </div>
-        </div>
-    </section>
+    <section id="albums"></section>
     <div class="clearfix"></div>
     <section id="updates">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-7 col-sm-6" id="latest_song">
-                    <h1>Latest songs</h1>
-                    <div class="news-feed">
-                        <img src="assets/img/news/1.jpg" alt="dummy">
-                        <a href="#">Wale's Own Comeback Inspired RGIII Anthem 'No Pain No Gain'</a>
-                        <ul>
-                            <li>Kalafina</li>
-                            <li><span class="fa fa-comment"></span>5 comments</li>
-                        </ul>
-                        <p>'I use uncertainty as motivation and hopefully Rob uses it as motivation as well,' Wale says
-                            of track written for Redskins quarterback documentary.</p>
-                    </div><!--\\\\latest news-->
-                </div><!--latest songs-->
-                <div class="col-lg-4 col-md-5 col-sm-6" id="latest_artists">
-                    <h1>Latest artists</h1>
-                        <a href="artist-detail.html"><img src="assets/img/artist/keiko.png" alt=""/></a>
-                </div><!--latest artists-->
+                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_song"></div><!--latest songs-->
+                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_artists"></div><!--latest artists-->
             </div>
         </div>
     </section>`;
-    home_slider();
-    home_playlist()
+    show_nav_bar();
+    get_home_playlist();
+    get_home_songs();
+    get_home_singers();
 }
 
-function home_slider() {
-    let text = `<div class="container">
-            <div class="home-inner">
-                <div id="homeSliderNav" class="slider-nav">
-                    <a id="home-prev" href="#" class="prev fa fa-chevron-left"></a>
-                    <a id="home-next" href="#" class="next fa fa-chevron-right"></a>
-                </div><!--sliderNav-->
-                <div id="flex-home" class="flexslider" data-animation="slide" data-animationSpeed="1000"
-                     data-autoPlay="true" data-slideshowSpeed="7000">
-                    <ul class="slides">
-                        <li><img src="assets/img/artist/keiko.png" alt="">
-                            <div class="flex-caption">
-                                <h2>Kubota Keiko</h2>
+//dũng làm update từ đây chị ghep giao diện vào nha e chưa biết lấy cái nào ?
+function showCreateSinger(){
+    document.getElementById("ajaxArea").innerHTML = `
+<form enctype="multipart/form-data" id="form">
+     <input type="text" name="name">
+     <input type="text" name="description">
+     <input type="file" name="file"/>
+     <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+     <button type="button" onclick="createSinger()">Upload</button>
+</form>`;
+}
+
+function createSinger(){
+    let form = document.getElementById("form");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/singers",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (singer) {
+            console.log(singer)
+            alert("Thêm thành công")
+        }
+    })
+}
+
+function showCreateSong() {
+    document.getElementById("ajaxArea").innerHTML = `<form enctype="multipart/form-data" id="form">
+    <input type="text" name="name">
+    <input type="text" name="description">
+    <input type="text" name="lyrics">
+    <input type="file" name="file"/>
+    <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+    <button type="button" onclick="createSong()">Upload</button>
+
+</form>`;
+}
+
+function createSong() {
+    let form = document.getElementById("form");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/songs",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (mp3) {
+            console.log(mp3)
+            alert("Thêm thành công")
+        }
+    })
+}
+
+function show_media_list(array) {
+    let html = `
+    <div class="container">
+        <div class="rock-player">
+            <div class="playListTrigger">
+                <a href="#"><i class="fa fa-list"></i></a>
+            </div><!--triggerPlayList in responsive-->
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div id="player-instance" class="jp-jplayer"></div>
+                            <div class="controls">
+                                <div class="jp-prev"></div>
+                                <div class="play-pause jp-play"></div>
+                                <div class="play-pause jp-pause" style="display:none"></div>
+                                <div class="jp-next"></div>
                             </div>
-                        </li>
-                        <li><img src="assets/img/artist/lisa.png" alt="">
-                            <div class="flex-caption">
-                                <h2>LiSA</h2>
+                            <!--controls-->
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            <div class="player-status">
+                                <h5 class="audio-title">Maroon 5 - Moves Like Jagger ft. Christina Aguilera</h5>
+                                <div class="audio-timer"><span class="current-time jp-current-time">01:02</span> / <span
+                                        class="total-time jp-duration">4:05</span></div>
+                                <div class="audio-progress">
+                                    <div class="jp-seek-bar">
+                                        <div class="audio-play-bar jp-play-bar" style="width:20%;"></div>
+                                    </div>
+                                    <!--jp-seek-bar-->
+                                </div>
+                                <!--audio-progress-->
                             </div>
-                        </li>
-                        <li><img src="assets/img/artist/taylor.png" alt="">
-                            <div class="flex-caption">
-                                <h2>Taylor Swift</h2>
+                            <!--player-status-->
+                        </div>
+                        <!--column-->
+                    </div>
+                    <!--inner-row-->
+                </div>
+                <!--column-->
+
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                    <div class="audio-list">
+                        <div class="audio-list-icon"></div>
+                        <div class="jp-playlist">
+                            <!--Add Songs In mp3 formate here-->
+                            <ul class="hidden playlist-files">`;
+    for (let i = 0; i < array.length; i++) {
+        html += `<li data-title="${array[i].name}"
+                    data-artist="${array[i].singer.name}"
+                    data-mp3="assets/audio/${array[i].mp3file}"></li>`
+                }
+    html += `
+    </ul>
+                            <!--Playlist ends-->
+                            <h5>Audio Playlist</h5>
+                            <div class="audio-track">
+                                <ul>
+                                    <li></li>
+                                </ul>
                             </div>
-                        </li>
-                        <li><img src="assets/img/artist/rin.png" alt="">
-                            <div class="flex-caption">
-                                <h2>Kagamine Rin & Len</h2>
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--row-->
+        </div>
+    </div>`
+    console.log(html)
+    document.getElementById("audio-player").innerHTML = html
+}
+
+function show_nav_bar() {
+    let html = `<div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle fa fa-navicon"></button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/basic/logo.png" alt="logo"/>
+                </a>
+            </div>
+            <div class="nav_wrapper">
+                <div class="nav_scroll">
+                    <div class="nav-search">
+                        <input type="text" placeholder="Search" id="search"/>
+                        <button type="submit" onclick="searchByName()"><i class="fa fa-search"></i></button>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active dropdown"><a href="#" onclick="homePage()">Trang chủ <i
+                                class="fa fa-caret-right"></i></a></li>
+                        <li class="yamm-fw dropdown"><a href="#" onclick="get_all_singer()">Nghệ sĩ <i class="fa fa-caret-right"></i></a></li>
+                        <li class="dropdown"><a href="#">Danh sách phát <i class="fa fa-caret-right"></i></a></li>`
+        if (localStorage.getItem("userAccId") == null) {
+            html += `<li><a href="#" onclick="formRegister()">Đăng kí</a></li>
+                        <li><a href="#" onclick="formLogin()">Đăng nhập</a></li>`
+        }
+        if (localStorage.getItem("userAccId") != null) {
+            html += `<li><a href="#" onclick="logout()">Đăng xuất</a></li>
+                        <li><a href="#" onclick="personal_page(${localStorage.getItem("userAccId")})">${localStorage.getItem("userAccName")}</a></li>
+                    <li class="dropdown"><a href="#">Tạo Mới <i class="fa fa-caret-right"></i></a>
+                      <ul class="dropdown-menu">
+                        <li><a onclick="showCreateSong()">Thêm bài hát</a> </li>
+                        <li><a >Thêm danh sách</a> </li>
+                        <li><a onclick="showCreateSinger()">Thêm ca sĩ</a> </li>
+                      </ul>
+                    </li>`
+        }
+        html +=
+                    `</ul>
                 </div>
             </div>
         </div>`
-    document.getElementById("home-slider").innerHTML = text;
+    document.getElementById("nav-bar").innerHTML=html;
 }
 
-function home_playlist() {
+function searchByName(){
+    let text = document.getElementById("search").value;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/songs/search?q=" + text,
+        success: function (songs) {
+            console.log(songs);
+            show_song(songs.content);
+            show_media_list(songs.content)
+        }
+    })
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/singers/search?q=" + text,
+        success: function (singers) {
+            console.log(singers);
+            show_singers(singers);
+        }
+    })
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/playlists/search?q=" + text,
+        success: function (playlists) {
+            console.log(playlists);
+            show_playlist(playlists);
+        }
+    })
+}
+
+function get_all_singer(){
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/playlists",
         success: function (playlists) {
             console.log(playlists);
+            let html = `
+            <section class="breadcrumb">
+             <div class="container">
+                  <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <h1>album</h1>
+                          <h5>list of albums</h5>
+                      </div>
+                      
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <ul>
+                              <li><a href="#">Trang chủ</a></li>
+                              <li><a href="#">albums</a></li>
+                          </ul>
+                      </div>
+                  </div>
+             </div>
+        </section>
+      <div class="clearfix"></div>`
+            for (let i = 0; i < playlists.length; i++) {
+
+            }
         }
     })
+}
+
+function logout() {
+    localStorage.removeItem("token")
+    localStorage.removeItem("userAccId")
+    localStorage.removeItem("userAccName")
+    homePage()
+}
+
+function get_home_playlist() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/playlists",
+        success: function (playlists) {
+            console.log(playlists);
+            show_playlist(playlists)
+        }
+    })
+}
+
+function show_playlist(array) {
+    console.log(array)
+    let html = `
+        <div class="container">
+              <h1>Latest Playlists</h1>
+              <div class="top-carouselnav">
+                  <a href="#" class="prev-album"><span class="fa fa-caret-left"></span></a>
+                  <a href="#" class="next-album"><span class="fa fa-caret-right"></span></a>
+              </div>
+        <div class="albums-carousel">`
+    for (let i = 0; i < array.length; i++) {
+        html += `
+            <div class="album">
+                <img src="assets/img/albums/${array[i].image}" alt=""/>
+                      <div class="hover">
+                          <ul>
+                              <li><a href="assets/img/albums/${array[i].image}" data-rel="prettyPhoto"><span class="fa fa-search"  ></span></a></li>
+                              <li><a href="album-detail.html"><span class="fa fa-link"></span></a></li>
+                          </ul>
+                          <h3>${array[i].name}</h3>
+                          <h2>${array[i].songs.length} bài hát</h2>
+                      </div>
+                  </div>`
+    }
+    html += `</div>
+              </div>
+          </section>
+          <div class="clearfix"></div>`
+    document.getElementById("albums").innerHTML = html;
+}
+
+function get_home_songs() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/songs",
+        success: function (songs) {
+            console.log(songs.content);
+            show_song(songs.content);
+            show_media_list(songs.content)
+        }
+    })
+}
+
+function show_song(array) {
+    let list = `<h1>Latest songs</h1>`
+    for (let i = 0; i < array.length; i++) {
+        list += `<div class="news-feed">
+                          <img src="assets/img/artist/${array[i].singer.avatar}" alt="dummy">
+                          <a href="#">${array[i].name}</a>
+                          <ul>
+                              <li>${array[i].singer.name}</li>
+                              <li><span class="fa fa-comment"></span>5 comments</li>
+                          </ul>
+                          <p>${array[i].description}</p>
+                      </div>`
+    }
+    document.getElementById("latest_song").innerHTML = list
+}
+
+function get_home_singers() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/singers",
+        success: function (singers) {
+            console.log(singers);
+            show_singers(singers.content);
+        }
+    })
+}
+
+function show_singers(array) {
+    let html = `<h1>Latest artists</h1>`
+    for (let i = 0; i < array.length; i++) {
+        html += `<div class="video-feed">
+                     <img src="assets/img/artist/${array[i].avatar}" alt=""/>
+                     <a href="video-detail.html"><span class="fa fa-play"></span></a>
+                     <h6>${array[i].name}</h6>
+                 </div>`
+    }
+    document.getElementById("latest_artists").innerHTML = html
 }
 
 function formLogin() {
@@ -166,6 +425,8 @@ function login() {
         success: function (user) {
             console.log(user)
             localStorage.setItem("token", user.accessToken)
+            localStorage.setItem("userAccId", user.id)
+            localStorage.setItem("userAccName", user.username)
             homePage()
         },
         error: function (error) {
@@ -258,4 +519,61 @@ function register() {
             homePage()
         }
     })
+}
+
+function personal_page(userId) {
+    console.log(userId)
+    document.getElementById("ajaxArea").innerHTML = `
+    <section id="albums"></section>
+    <div class="clearfix"></div>
+    <section id="updates">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_song"></div><!--latest songs-->
+                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_artists"></div><!--latest artists-->
+            </div>
+        </div>
+    </section>`;
+    get_personal_playlist(userId);
+    get_personal_songs(userId);
+    get_personal_singers(userId)
+}
+
+function get_personal_playlist(userId) {
+    console.log(userId)
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/users/" + userId + "/playlists",
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (playlists) {
+            console.log(playlists);
+            show_playlist(playlists)
+        }
+    });
+}
+
+function get_personal_songs(userId) {
+    console.log(userId)
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/users/" + userId + "/songs",
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (songs) {
+            console.log(songs);
+            show_song(songs)
+        }
+    });
+}
+
+function get_personal_singers(userId) {
+    console.log(userId)
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/users/" + userId + "/singers",
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (singers) {
+            console.log(singers);
+            show_singers(singers)
+        }
+    });
 }

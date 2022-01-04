@@ -39,4 +39,9 @@ public class SingerServiceImpl implements SingerService {
     public Page<Singer> findAll(Pageable pageable) {
         return singerRepository.findAll(pageable);
     }
+
+    @Override
+    public Iterable<Singer> findByUser(Long id) {
+        return singerRepository.findByUser(id);
+    }
 }

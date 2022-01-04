@@ -1,10 +1,7 @@
 package gr3.gr3_casestudy4.controller;
 
-import gr3.gr3_casestudy4.model.JwtResponse;
-import gr3.gr3_casestudy4.model.Role;
-import gr3.gr3_casestudy4.model.User;
-import gr3.gr3_casestudy4.service.RoleService;
-import gr3.gr3_casestudy4.service.UserService;
+import gr3.gr3_casestudy4.model.*;
+import gr3.gr3_casestudy4.service.*;
 import gr3.gr3_casestudy4.service.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -51,6 +48,15 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private PlaylistService playlistService;
+
+    @Autowired
+    private SongService songService;
+
+    @Autowired
+    private SingerService singerService;
+
 
     @GetMapping("/users")
     public ResponseEntity<Iterable<User>> showAllUser() {
@@ -91,7 +97,7 @@ public class UserController {
 //        } catch (IOException ex) {
 //            ex.printStackTrace();
 //        }
-        user.setAvatar("assets/img/ava_default.png");
+        user.setAvatar("assets/img/users/ava_default.png");
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
@@ -138,5 +144,23 @@ public class UserController {
 
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("users/{id}/playlists")
+    public ResponseEntity<Iterable<Playlist>> findPlaylistByUser(@PathVariable Long id) {
+        Iterable<Playlist> playlists = playlistService.findByUser(id);
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("users/{id}/songs")
+    public ResponseEntity<Iterable<Song>> findSongByUser(@PathVariable Long id) {
+        Iterable<Song> songs = songService.findByUser(id);
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @GetMapping("users/{id}/singers")
+    public ResponseEntity<Iterable<Singer>> findSingerByUser(@PathVariable Long id) {
+        Iterable<Singer> singers = singerService.findByUser(id);
+        return new ResponseEntity<>(singers, HttpStatus.OK);
     }
 }
