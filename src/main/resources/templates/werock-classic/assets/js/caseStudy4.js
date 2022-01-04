@@ -50,11 +50,12 @@ function createSinger(){
 }
 
 function showCreateSong() {
-    document.getElementById("main").innerHTML = `<form enctype="multipart/form-data" id="form">
-<input type="text" name="name">
-<input type="text" name="description">
-<input type="text" name="lyrics">
+    document.getElementById("ajaxArea").innerHTML = `<form enctype="multipart/form-data" id="form">
+    <input type="text" name="name">
+    <input type="text" name="description">
+    <input type="text" name="lyrics">
     <input type="file" name="file"/>
+    <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
     <button type="button" onclick="createSong()">Upload</button>
 
 </form>`;
@@ -73,6 +74,7 @@ function createSong() {
         contentType: false,
         cache: false,
         timeout: 1000000,
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
         success: function (mp3) {
             console.log(mp3)
             alert("Thêm thành công")
@@ -180,9 +182,9 @@ function show_nav_bar() {
                         <li><a href="#" onclick="personal_page(${localStorage.getItem("userAccId")})">${localStorage.getItem("userAccName")}</a></li>
                     <li class="dropdown"><a href="#">Tạo Mới <i class="fa fa-caret-right"></i></a>
                       <ul class="dropdown-menu">
-                        <li><a href="#">Thêm bài hát</a> </li>
-                        <li><a href="#">Thêm danh sách</a> </li>
-                        <li><a href="#" onclick="showCreateSinger()">Thêm ca sĩ</a> </li>
+                        <li><a onclick="showCreateSong()">Thêm bài hát</a> </li>
+                        <li><a >Thêm danh sách</a> </li>
+                        <li><a onclick="showCreateSinger()">Thêm ca sĩ</a> </li>
                       </ul>
                     </li>`
         }
