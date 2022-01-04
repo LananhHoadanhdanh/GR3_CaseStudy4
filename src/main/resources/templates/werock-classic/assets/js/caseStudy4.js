@@ -15,6 +15,39 @@ function homePage() {
     get_home_songs();
     get_home_singers();
 }
+//dũng làm update từ đây chị ghep giao diện vào nha e chưa biết lấy cái nào ?
+function showCreateSinger(){
+    document.getElementById("ajaxArea").innerHTML = `<form enctype="multipart/form-data" id="form">
+     <input type="text" name="name">
+     <input type="text" name="description">
+     <input type="number" name="user">
+    <input type="file" name="file"/>
+    <button type="button" onclick="createSinger()">Upload</button>
+
+</form>`;
+}
+function createSinger(){
+    let form = document.getElementById("form");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        // url: "http://localhost:8080/singers/update",
+        url: "http://localhost:8080/singers",
+
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        success: function (singer) {
+            console.log(singer)
+            alert("Thêm thành công")
+
+        }
+    })
+}
 
 function show_media_list(array) {
     let html = ``;

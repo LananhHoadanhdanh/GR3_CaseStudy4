@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function showCreate() {
+            document.getElementById("main").innerHTML = `<form enctype="multipart/form-data" id="form">
+     <input type="text" name="name">
+     <input type="text" name="description">
+     <input type="number" name="user">
+    <input type="file" name="file"/>
+    <button type="button" onclick="submitForm()">Upload</button>
+
+</form>`;
+        }
+        function submitForm() {
+            let form = document.getElementById("form");
+            let data = new FormData(form);
+            console.log(data)
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                // url: "http://localhost:8080/singers/update",
+                url: "http://localhost:8080/singers",
+
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 1000000,
+                success: function (singer) {
+                    console.log(singer)
+                    alert("ảnh")
+                    // document.getElementById('main').innerHTML = `${data.name}<img src="image/${data.name}">`
+                }
+            })
+        }
+    </script>
+
+</head>
+<body>
+<!-- HTML5 Input Form Elements -->
+<div id="main"></div>
+
+<button onclick="showCreate()"> show create</button>
+
+
+<!-- Ajax JavaScript File Upload to Spring Boot Logic -->
+
+</body>
+</html>
