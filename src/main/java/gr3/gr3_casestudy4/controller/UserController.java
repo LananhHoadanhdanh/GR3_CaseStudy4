@@ -1,10 +1,7 @@
 package gr3.gr3_casestudy4.controller;
 
 import gr3.gr3_casestudy4.model.*;
-import gr3.gr3_casestudy4.service.PlaylistService;
-import gr3.gr3_casestudy4.service.RoleService;
-import gr3.gr3_casestudy4.service.SongService;
-import gr3.gr3_casestudy4.service.UserService;
+import gr3.gr3_casestudy4.service.*;
 import gr3.gr3_casestudy4.service.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -56,6 +53,9 @@ public class UserController {
 
     @Autowired
     private SongService songService;
+
+    @Autowired
+    private SingerService singerService;
 
 
     @GetMapping("/users")
@@ -156,5 +156,11 @@ public class UserController {
     public ResponseEntity<Iterable<Song>> findSongByUser(@PathVariable Long id) {
         Iterable<Song> songs = songService.findByUser(id);
         return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @GetMapping("users/{id}/singers")
+    public ResponseEntity<Iterable<Singer>> findSingerByUser(@PathVariable Long id) {
+        Iterable<Singer> singers = singerService.findByUser(id);
+        return new ResponseEntity<>(singers, HttpStatus.OK);
     }
 }

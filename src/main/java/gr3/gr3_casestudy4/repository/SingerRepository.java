@@ -15,4 +15,6 @@ public interface SingerRepository extends JpaRepository<Singer, Long> {
     @Override
     Page<Singer> findAll(Pageable pageable);
     Page<Singer> findAllByNameContaining(String name, Pageable pageable);
+    @Query("select s from Singer s where s.user.id = :id")
+    Iterable<Singer> findByUser(@Param("id") Long id);
 }

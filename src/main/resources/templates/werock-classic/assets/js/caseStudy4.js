@@ -14,30 +14,17 @@ function homePage() {
     get_home_playlist();
     get_home_songs();
     get_home_singers();
-    show_media_list();
 }
 
-function show_media_list() {
-    let html = `<li data-title="A Thousand Year"
-                    data-artist="Christina Perri"
-                    data-mp3="assets/audio/A-Thousand-Year-Christina-peri.mp3"></li>
-                <li data-title="Hotaru"
-                    data-artist="Fujita Maiko"
-                    data-mp3="assets/audio/Hotaru-Fujita-Maiko.mp3"></li>
-                <li data-title="Lullaby"
-                    data-artist="Rauf & Faik"
-                    data-mp3="assets/audio/Lullaby.mp3"></li>
-                <li data-title="Sakura Sakura"
-                    data-artist="Rin'"
-                    data-mp3="assets/audio/SakuraSakura-Rin.mp3"></li>
-                <li data-title="Yuki no Hana"
-                    data-artist="Mika Nakashima"
-                    data-mp3="assets/audio/Yuki-no-Hana-Nakashima-Mika.mp3"></li>
-                <li data-title="Yume to Hazakura"
-                    data-artist="Wotamin"
-                    data-mp3="assets/audio/Yume-to-Hazakura-Wotamin.mp3"></li>`
+function show_media_list(array) {
+    let html = ``;
+    console.log(array)
+    for (let i = 0; i < array.length; i++) {
+        html += `<li data-title="${array[i].name}"
+                    data-artist="${array[i].singer.name}"
+                    data-mp3="assets/audio/${array[i].mp3file}"></li>`
+                }
     document.getElementById("media-playlist").innerHTML = html
-
 }
 
 function show_nav_bar() {
@@ -134,28 +121,33 @@ function get_home_playlist() {
 }
 
 function show_playlist(array) {
+    console.log(array)
     let html = `
         <div class="container">
-            <h1>Latest Playlist</h1>
-            <div class="top-carouselnav">
-                <a href="#" class="prev-album"><span class="fa fa-caret-left"></span></a>
-                <a href="#" class="next-album"><span class="fa fa-caret-right"></span></a>
-            </div>`
+              <h1>Latest Playlists</h1>
+              <div class="top-carouselnav">
+                  <a href="#" class="prev-album"><span class="fa fa-caret-left"></span></a>
+                  <a href="#" class="next-album"><span class="fa fa-caret-right"></span></a>
+              </div>
+        <div class="albums-carousel">`
     for (let i = 0; i < array.length; i++) {
-        html += `<div class="albums-carousel">
-                            <div class="album">
-                                <img src="assets/img/artist/keiko.png" alt=""/>
-                                <div class="hover">
-                                    <ul>
-                                        <li><a href="#"><span class="fa fa-search"></span></a></li>
-                                    </ul>
-                                    <h3>${array[i].songs.length} bài hát</h3>
-                                    <h2>${array[i].name}</h2>
-                                </div>
-                            </div><!--\\\\album-->
-                        </div>`
+        html += `
+            <div class="album">
+                <img src="assets/img/albums/${array[i].image}" alt=""/>
+                      <div class="hover">
+                          <ul>
+                              <li><a href="assets/img/albums/${array[i].image}" data-rel="prettyPhoto"><span class="fa fa-search"  ></span></a></li>
+                              <li><a href="album-detail.html"><span class="fa fa-link"></span></a></li>
+                          </ul>
+                          <h3>${array[i].name}</h3>
+                          <h2>${array[i].songs.length} bài hát</h2>
+                      </div>
+                  </div>`
     }
-    html += `</div>`
+    html += `</div>
+              </div>
+          </section>
+          <div class="clearfix"></div>`
     document.getElementById("albums").innerHTML = html;
 }
 
@@ -166,7 +158,7 @@ function get_home_songs() {
         success: function (songs) {
             console.log(songs.content);
             show_song(songs.content);
-            // show_media_list(songs.content)
+            show_media_list(songs.content)
         }
     })
 }
@@ -387,6 +379,7 @@ function personal_page(userId) {
     </section>`;
     get_personal_playlist(userId);
     get_personal_songs(userId);
+    get_personal_singers(userId)
 }
 
 function get_personal_playlist(userId) {
@@ -411,6 +404,19 @@ function get_personal_songs(userId) {
         success: function (songs) {
             console.log(songs);
             show_song(songs)
+        }
+    });
+}
+
+function get_personal_singers(userId) {
+    console.log(userId)
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/users/" + userId + "/singers",
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (singers) {
+            console.log(singers);
+            show_singers(singers)
         }
     });
 }
