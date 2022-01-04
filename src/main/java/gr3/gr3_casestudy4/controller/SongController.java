@@ -12,8 +12,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -57,8 +61,17 @@ public class SongController {
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
     @PostMapping("")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Song> createSong(@RequestBody Song song){
+//    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Song> createSong(Song song, MultipartFile file){
+        String fileName=file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("D:\\module4\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\audio\\" + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        song.setMp3file(fileName);
+        song.setStatus(1);
         song.setCreateTime(LocalDateTime.now());
         songService.save(song);
         return new ResponseEntity<>(song,HttpStatus.OK);
@@ -74,5 +87,16 @@ public class SongController {
         commentSong.setTime(LocalDateTime.now());
         commentSongService.save(commentSong);
         return new ResponseEntity<>(commentSong,HttpStatus.OK);
+    }
+    @PostMapping("/mp3")
+    public ResponseEntity<String> mp3( MultipartFile file){
+        String name=file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("D:\\module4\\GR3_CaseStudy4\\src\\main\\resources\\Ak88\\update\\" + name));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(name,HttpStatus.OK);
     }
 }

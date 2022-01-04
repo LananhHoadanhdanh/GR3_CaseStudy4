@@ -7,14 +7,15 @@
     <script>
         function showCreate() {
             document.getElementById("main").innerHTML = `<form enctype="multipart/form-data" id="form">
-     <input type="text" name="name">
-     <input type="text" name="description">
-     <input type="number" name="user">
+<input type="text" name="name">
+<input type="text" name="description">
+<input type="text" name="lyrics">
     <input type="file" name="file"/>
     <button type="button" onclick="submitForm()">Upload</button>
 
 </form>`;
         }
+
         function submitForm() {
             let form = document.getElementById("form");
             let data = new FormData(form);
@@ -22,21 +23,19 @@
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                // url: "http://localhost:8080/singers/update",
-                url: "http://localhost:8080/singers",
-
+                url: "http://localhost:8080/songs",
                 data: data,
                 processData: false,
                 contentType: false,
                 cache: false,
                 timeout: 1000000,
-                success: function (singer) {
-                    console.log(singer)
-                    alert("ảnh")
-                    // document.getElementById('main').innerHTML = `${data.name}<img src="image/${data.name}">`
+                success: function (mp3) {
+                    console.log(mp3)
+                    alert("mp3")
                 }
             })
         }
+
     </script>
 
 </head>
