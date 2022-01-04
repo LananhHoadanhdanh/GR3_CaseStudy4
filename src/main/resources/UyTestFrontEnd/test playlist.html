@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<meta charset="UTF-8">
+<title>Title</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    function create() {
+        document.getElementById("main").innerHTML = `<form enctype="multipart/form-data" id="form">
+<input type="text" name="name">
+<input type="text" name="description">
+<input type="text" name="lyrics">
+    <input type="file" name="file"/>
+    <button type="button" onclick="submitForm()">Upload</button>
+
+</form>`;
+}
+    function submitForm() {
+        let form = document.getElementById("form");
+        let data = new FormData(form);
+        console.log(data)
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "http://localhost:8080/playlists",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 1000000,
+            success: function (pll) {
+                console.log(pll)
+                alert("ok")
+            }
+        })
+    }
+
+</script>
+<body>
+<button onclick="create()">create</button>
+</body>
+</html>
