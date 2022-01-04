@@ -10,6 +10,7 @@ public class Playlist {
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
+    private String image;
 
     @ManyToOne
     private User user;
@@ -30,6 +31,12 @@ public class Playlist {
         this.user = user;
     }
 
+    public Playlist(String name, String image, User user, Set<Song> songs) {
+        this.name = name;
+        this.image = image;
+        this.user = user;
+        this.songs = songs;
+    }
 
     public Playlist(String name, User user, Set<Song> songs) {
         this.name = name;
@@ -74,5 +81,13 @@ public class Playlist {
     }
     public void setSongs(Set<Song> songs) {
         this.songs = songs;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
