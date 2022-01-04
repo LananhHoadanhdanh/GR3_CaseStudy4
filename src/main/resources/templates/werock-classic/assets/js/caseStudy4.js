@@ -185,13 +185,13 @@ function show_media_list(array) {
                         <div class="jp-playlist">
                             <!--Add Songs In mp3 formate here-->
                             <ul class="hidden playlist-files">`;
-    for (let i = 0; i < array.length; i++) {
-        html += `<li data-title="${array[i].name}"
-                    data-artist="${array[i].singer.name}"
-                    data-mp3="assets/audio/${array[i].mp3file}"></li>`
-                }
-    html += `
-    </ul>
+                    for (let i = 0; i < array.length; i++) {
+                        html += `<li data-title="${array[i].name}"
+                                    data-artist="${array[i].singer.name}"
+                                    data-mp3="assets/audio/${array[i].mp3file}"></li>`
+                                }
+                    html += `
+                    </ul>
                             <!--Playlist ends-->
                             <h5>Audio Playlist</h5>
                             <div class="audio-track">
@@ -285,31 +285,47 @@ function searchByName(){
 function get_all_singer(){
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/playlists",
-        success: function (playlists) {
-            console.log(playlists);
+        url: "http://localhost:8080/singers",
+        success: function (singers) {
+            console.log(singers);
             let html = `
             <section class="breadcrumb">
              <div class="container">
                   <div class="row">
                       <div class="col-lg-6 col-md-6 col-sm-6">
-                          <h1>album</h1>
-                          <h5>list of albums</h5>
+                          <h1>Nghệ sĩ</h1>
+                          <h5>Danh sách nghệ sĩ</h5>
                       </div>
                       
                       <div class="col-lg-6 col-md-6 col-sm-6">
                           <ul>
                               <li><a href="#">Trang chủ</a></li>
-                              <li><a href="#">albums</a></li>
+                              <li><a href="#">Nghệ sĩ</a></li>
                           </ul>
                       </div>
                   </div>
              </div>
         </section>
-      <div class="clearfix"></div>`
-            for (let i = 0; i < playlists.length; i++) {
-
+      <div class="clearfix"></div>
+      <section id="artists">
+          <div class="container">
+              <div class="artist-list">
+                  <div class="row">`
+            for (let i = 0; i < singers.content.length; i++) {
+                html += `
+                <div class="col-lg-3 col-md-3 col-sm-4 xs-12">  
+                          <div class="artist">
+                              <img src="assets/img/artist/${singers.content[i].avatar}" alt="" width="100%"/>
+                              <a>${singers.content[i].name}</a>
+                          </div>
+                       </div>`
             }
+            html += `
+            </div><!--//artist list-->
+              </div><!--row-->
+          </div><!--//container-->  
+      </section>`
+            document.getElementById("ajaxArea").innerHTML = html;
         }
     })
 }
