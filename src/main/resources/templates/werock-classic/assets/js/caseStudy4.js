@@ -15,6 +15,7 @@ function homePage() {
     get_home_songs();
     get_home_singers();
 }
+
 //dũng làm update từ đây chị ghep giao diện vào nha e chưa biết lấy cái nào ?
 function showCreateSinger(){
     document.getElementById("ajaxArea").innerHTML = `
@@ -49,14 +50,75 @@ function createSinger(){
 }
 
 function show_media_list(array) {
-    let html = ``;
-    console.log(array)
+    let html = `
+    <div class="container">
+        <div class="rock-player">
+            <div class="playListTrigger">
+                <a href="#"><i class="fa fa-list"></i></a>
+            </div><!--triggerPlayList in responsive-->
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div id="player-instance" class="jp-jplayer"></div>
+                            <div class="controls">
+                                <div class="jp-prev"></div>
+                                <div class="play-pause jp-play"></div>
+                                <div class="play-pause jp-pause" style="display:none"></div>
+                                <div class="jp-next"></div>
+                            </div>
+                            <!--controls-->
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            <div class="player-status">
+                                <h5 class="audio-title">Maroon 5 - Moves Like Jagger ft. Christina Aguilera</h5>
+                                <div class="audio-timer"><span class="current-time jp-current-time">01:02</span> / <span
+                                        class="total-time jp-duration">4:05</span></div>
+                                <div class="audio-progress">
+                                    <div class="jp-seek-bar">
+                                        <div class="audio-play-bar jp-play-bar" style="width:20%;"></div>
+                                    </div>
+                                    <!--jp-seek-bar-->
+                                </div>
+                                <!--audio-progress-->
+                            </div>
+                            <!--player-status-->
+                        </div>
+                        <!--column-->
+                    </div>
+                    <!--inner-row-->
+                </div>
+                <!--column-->
+
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                    <div class="audio-list">
+                        <div class="audio-list-icon"></div>
+                        <div class="jp-playlist">
+                            <!--Add Songs In mp3 formate here-->
+                            <ul class="hidden playlist-files">`;
     for (let i = 0; i < array.length; i++) {
         html += `<li data-title="${array[i].name}"
                     data-artist="${array[i].singer.name}"
                     data-mp3="assets/audio/${array[i].mp3file}"></li>`
                 }
-    document.getElementById("media-playlist").innerHTML = html
+    html += `
+    </ul>
+                            <!--Playlist ends-->
+                            <h5>Audio Playlist</h5>
+                            <div class="audio-track">
+                                <ul>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--row-->
+        </div>
+    </div>`
+    console.log(html)
+    document.getElementById("audio-player").innerHTML = html
 }
 
 function show_nav_bar() {
@@ -70,10 +132,8 @@ function show_nav_bar() {
             <div class="nav_wrapper">
                 <div class="nav_scroll">
                     <div class="nav-search">
-                        <form>
-                            <input type="text" placeholder="Search"/>
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
+                        <input type="text" placeholder="Search" id="search"/>
+                        <button type="submit" onclick="searchByName()"><i class="fa fa-search"></i></button>
                     </div>
                     <ul class="nav navbar-nav">
                         <li class="active dropdown"><a href="#" onclick="homePage()">Trang chủ <i
@@ -101,6 +161,37 @@ function show_nav_bar() {
             </div>
         </div>`
     document.getElementById("nav-bar").innerHTML=html;
+}
+
+function searchByName(){
+    let text = document.getElementById("search").value;
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/songs/search?q=" + text,
+        success: function (songs) {
+            console.log(songs);
+            show_song(songs.content);
+            show_media_list(songs.content)
+        }
+    })
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/singers/search?q=" + text,
+        success: function (singers) {
+            console.log(singers);
+            show_singers(singers);
+        }
+    })
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/playlists/search?q=" + text,
+        success: function (playlists) {
+            console.log(playlists);
+            show_playlist(playlists);
+        }
+    })
 }
 
 function get_all_singer(){

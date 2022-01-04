@@ -63,34 +63,6 @@
         </div>
     </div>
     <nav class="navbar yamm navbar-default" id="nav-bar">
-<!--        <div class="container">-->
-<!--            <div class="navbar-header">-->
-<!--                <button type="button" class="navbar-toggle fa fa-navicon"></button>-->
-<!--                <a class="navbar-brand" href="index.html">-->
-<!--                    <img src="assets/img/basic/logo.png" alt="logo"/>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--            <div class="nav_wrapper">-->
-<!--                <div class="nav_scroll">-->
-<!--                    <div class="nav-search">-->
-<!--                        <form>-->
-<!--                            <input type="text" placeholder="Search"/>-->
-<!--                            <button type="submit"><i class="fa fa-search"></i></button>-->
-<!--                        </form>-->
-<!--                    </div>-->
-
-<!--                    <ul class="nav navbar-nav">-->
-<!--                        <li class="active dropdown"><a href="#" onclick="homePage()">Trang chủ <i-->
-<!--                                class="fa fa-caret-right"></i></a></li>-->
-<!--                        <li class="yamm-fw dropdown"><a href="#">Nghệ sĩ <i class="fa fa-caret-right"></i></a></li>-->
-<!--                        <li class="dropdown"><a href="#">Danh sách phát <i class="fa fa-caret-right"></i></a></li>-->
-<!--                        <li><a href="#" onclick="formRegister()">Đăng kí</a></li>-->
-<!--                        <li><a href="#" onclick="formLogin()">Đăng nhập</a></li>-->
-<!--                        <li><a href="#">Đăng xuất</a></li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </nav>
 </header>
 
@@ -110,66 +82,66 @@ JPlayer (Audio Player)
 =================================-->
 
 <section id="audio-player">
-    <div class="container">
-        <div class="rock-player">
-            <div class="playListTrigger">
-                <a href="#"><i class="fa fa-list"></i></a>
-            </div><!--triggerPlayList in responsive-->
-            <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div id="player-instance" class="jp-jplayer"></div>
-                            <div class="controls">
-                                <div class="jp-prev"></div>
-                                <div class="play-pause jp-play"></div>
-                                <div class="play-pause jp-pause" style="display:none"></div>
-                                <div class="jp-next"></div>
-                            </div>
-                            <!--controls-->
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                            <div class="player-status">
-                                <h5 class="audio-title">Maroon 5 - Moves Like Jagger ft. Christina Aguilera</h5>
-                                <div class="audio-timer"><span class="current-time jp-current-time">01:02</span> / <span
-                                        class="total-time jp-duration">4:05</span></div>
-                                <div class="audio-progress">
-                                    <div class="jp-seek-bar">
-                                        <div class="audio-play-bar jp-play-bar" style="width:20%;"></div>
-                                    </div>
-                                    <!--jp-seek-bar-->
-                                </div>
-                                <!--audio-progress-->
-                            </div>
-                            <!--player-status-->
-                        </div>
-                        <!--column-->
-                    </div>
-                    <!--inner-row-->
-                </div>
-                <!--column-->
+<!--    <div class="container">-->
+<!--        <div class="rock-player">-->
+<!--            <div class="playListTrigger">-->
+<!--                <a href="#"><i class="fa fa-list"></i></a>-->
+<!--            </div>&lt;!&ndash;triggerPlayList in responsive&ndash;&gt;-->
+<!--            <div class="row">-->
+<!--                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">-->
+<!--                            <div id="player-instance" class="jp-jplayer"></div>-->
+<!--                            <div class="controls">-->
+<!--                                <div class="jp-prev"></div>-->
+<!--                                <div class="play-pause jp-play"></div>-->
+<!--                                <div class="play-pause jp-pause" style="display:none"></div>-->
+<!--                                <div class="jp-next"></div>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash;controls&ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">-->
+<!--                            <div class="player-status">-->
+<!--                                <h5 class="audio-title">Maroon 5 - Moves Like Jagger ft. Christina Aguilera</h5>-->
+<!--                                <div class="audio-timer"><span class="current-time jp-current-time">01:02</span> / <span-->
+<!--                                        class="total-time jp-duration">4:05</span></div>-->
+<!--                                <div class="audio-progress">-->
+<!--                                    <div class="jp-seek-bar">-->
+<!--                                        <div class="audio-play-bar jp-play-bar" style="width:20%;"></div>-->
+<!--                                    </div>-->
+<!--                                    &lt;!&ndash;jp-seek-bar&ndash;&gt;-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash;audio-progress&ndash;&gt;-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash;player-status&ndash;&gt;-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash;column&ndash;&gt;-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;inner-row&ndash;&gt;-->
+<!--                </div>-->
+<!--                &lt;!&ndash;column&ndash;&gt;-->
 
-                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                    <div class="audio-list">
-                        <div class="audio-list-icon"></div>
-                        <div class="jp-playlist">
-                            <!--Add Songs In mp3 formate here-->
-                            <ul class="hidden playlist-files" id="media-playlist">
-                            </ul>
-                            <!--Playlist ends-->
-                            <h5>Audio Playlist</h5>
-                            <div class="audio-track">
-                                <ul>
-                                    <li></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--row-->
-        </div>
-    </div>
+<!--                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">-->
+<!--                    <div class="audio-list">-->
+<!--                        <div class="audio-list-icon"></div>-->
+<!--                        <div class="jp-playlist">-->
+<!--                            &lt;!&ndash;Add Songs In mp3 formate here&ndash;&gt;-->
+<!--                            <ul class="hidden playlist-files" id="media-playlist">-->
+<!--                            </ul>-->
+<!--                            &lt;!&ndash;Playlist ends&ndash;&gt;-->
+<!--                            <h5>Audio Playlist</h5>-->
+<!--                            <div class="audio-track">-->
+<!--                                <ul>-->
+<!--                                    <li></li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;row&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
 </section>
 
 <section id="home-slider">
