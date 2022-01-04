@@ -175,7 +175,7 @@ function show_song(array) {
     let list = `<h1>Latest songs</h1>`
     for (let i = 0; i < array.length; i++) {
         list += `<div class="news-feed">
-                          <img src="${array[i].singer.avatar}" alt="dummy">
+                          <img src="assets/img/artist/${array[i].singer.avatar}" alt="dummy">
                           <a href="#">${array[i].name}</a>
                           <ul>
                               <li>${array[i].singer.name}</li>
@@ -202,7 +202,7 @@ function show_singers(array) {
     let html = `<h1>Latest artists</h1>`
     for (let i = 0; i < array.length; i++) {
         html += `<div class="video-feed">
-                     <img src="${array[i].avatar}" alt=""/>
+                     <img src="assets/img/artist/${array[i].avatar}" alt=""/>
                      <a href="video-detail.html"><span class="fa fa-play"></span></a>
                      <h6>${array[i].name}</h6>
                  </div>`
