@@ -50,19 +50,75 @@ function createSinger(){
 }
 
 function showCreateSong() {
-    document.getElementById("ajaxArea").innerHTML = `<form enctype="multipart/form-data" id="form">
-    <input type="text" name="name">
-    <input type="text" name="description">
-    <input type="text" name="lyrics">
-    <input type="file" name="file"/>
-    <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
-    <button type="button" onclick="createSong()">Upload</button>
+    let form = `<section class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h1>Tải bài hát</h1>
+                        <h5>Thông tin bài hát</h5>
+                    </div>
 
-</form>`;
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Thêm bài hát</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                        <form id="contactform" enctype="multipart/form-data">
+                          <div class="row">
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Tên lên bài hát:</h5>
+                                  <input type="text" id="name" name="name"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Mô tả:</h5>
+                                   <input type="text" name="description" id="description" />
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>File bài hát:</h5>
+                                   <input type="file" name="file" id="file" />
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Ca sĩ:</h5>
+                                   <input type="number" name="singer" id="singer" />
+                              </div>
+                              <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+                          </div>
+                          <div class="row">
+                              <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h5>Lời bài hát:</h5>
+                                  <textarea name="lyrics" id="message"></textarea>
+                              </div>
+                          </div>
+                          <button id="submit1" type="submit" onclick="createSong()">Submit</button>
+                      </form>
+                            <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
+                        </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <p>Nhà số 23, Lô TT-01, Khu đô thị MonCity, P. Hàm Nghi, Hà Nội</p>
+                        <i class="fa fa-mobile-phone"></i>
+                        <p>0988666888</p>
+                        <b class=" fa fa-envelope"></b>
+                        <p>gr3@c0821i1.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br> <br>`;
+    document.getElementById("ajaxArea").innerHTML = form;
 }
 
 function createSong() {
-    let form = document.getElementById("form");
+    let form = document.getElementById("contactform");
     let data = new FormData(form);
     console.log(data)
     $.ajax({
@@ -325,12 +381,10 @@ function show_song(array) {
     for (let i = 0; i < array.length; i++) {
         list += `<div class="news-feed">
                           <img src="assets/img/artist/${array[i].singer.avatar}" alt="dummy">
-                          <a href="#">${array[i].name}</a>
-                          <ul>
-                              <li>${array[i].singer.name}</li>
-                              <li><span class="fa fa-comment"></span>5 comments</li>
-                          </ul>
-                          <p>${array[i].description}</p>
+                          <a href="#">${array[i].name} - ${array[i].singer.name}</a>
+                          <audio controls>
+                              <source src="assets/audio/${array[i].mp3file}" type="audio/mpeg">
+                          </audio>
                       </div>`
     }
     document.getElementById("latest_song").innerHTML = list
