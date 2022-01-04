@@ -41,12 +41,12 @@ public class SingerController {
         return new ResponseEntity<>(singer.get(),HttpStatus.OK);
     }
     @PostMapping("")
-//    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Singer> create( Singer singer,  MultipartFile file){
         String nameFile=file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),
-                    new File("D:\\module4\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\artist\\" + nameFile));
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\artist\\" + nameFile));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -17,15 +17,16 @@ function homePage() {
 }
 //dũng làm update từ đây chị ghep giao diện vào nha e chưa biết lấy cái nào ?
 function showCreateSinger(){
-    document.getElementById("ajaxArea").innerHTML = `<form enctype="multipart/form-data" id="form">
+    document.getElementById("ajaxArea").innerHTML = `
+<form enctype="multipart/form-data" id="form">
      <input type="text" name="name">
      <input type="text" name="description">
-     <input type="number" name="user">
-    <input type="file" name="file"/>
-    <button type="button" onclick="createSinger()">Upload</button>
-
+     <input type="file" name="file"/>
+     <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+     <button type="button" onclick="createSinger()">Upload</button>
 </form>`;
 }
+
 function createSinger(){
     let form = document.getElementById("form");
     let data = new FormData(form);
@@ -33,18 +34,16 @@ function createSinger(){
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
-        // url: "http://localhost:8080/singers/update",
         url: "http://localhost:8080/singers",
-
         data: data,
         processData: false,
         contentType: false,
         cache: false,
         timeout: 1000000,
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
         success: function (singer) {
             console.log(singer)
             alert("Thêm thành công")
-
         }
     })
 }
@@ -92,10 +91,11 @@ function show_nav_bar() {
                       <ul class="dropdown-menu">
                         <li><a href="#">Thêm bài hát</a> </li>
                         <li><a href="#">Thêm danh sách</a> </li>
-                        <li><a href="#">Thêm ca sĩ</a> </li>
+                        <li><a href="#" onclick="showCreateSinger()">Thêm ca sĩ</a> </li>
                       </ul>
                     </li>`
         }
+        html +=
                     `</ul>
                 </div>
             </div>
