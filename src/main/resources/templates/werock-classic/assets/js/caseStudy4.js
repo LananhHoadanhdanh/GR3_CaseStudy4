@@ -59,7 +59,7 @@ function show_nav_bar() {
                     <ul class="nav navbar-nav">
                         <li class="active dropdown"><a href="#" onclick="homePage()">Trang chủ <i
                                 class="fa fa-caret-right"></i></a></li>
-                        <li class="yamm-fw dropdown"><a href="#">Nghệ sĩ <i class="fa fa-caret-right"></i></a></li>
+                        <li class="yamm-fw dropdown"><a href="#" onclick="get_all_singer()">Nghệ sĩ <i class="fa fa-caret-right"></i></a></li>
                         <li class="dropdown"><a href="#">Danh sách phát <i class="fa fa-caret-right"></i></a></li>`
         if (localStorage.getItem("userAccId") == null) {
             html += `<li><a href="#" onclick="formRegister()">Đăng kí</a></li>
@@ -81,6 +81,38 @@ function show_nav_bar() {
             </div>
         </div>`
     document.getElementById("nav-bar").innerHTML=html;
+}
+
+function get_all_singer(){
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/playlists",
+        success: function (playlists) {
+            console.log(playlists);
+            let html = `
+            <section class="breadcrumb">
+             <div class="container">
+                  <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <h1>album</h1>
+                          <h5>list of albums</h5>
+                      </div>
+                      
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <ul>
+                              <li><a href="#">Trang chủ</a></li>
+                              <li><a href="#">albums</a></li>
+                          </ul>
+                      </div>
+                  </div>
+             </div>
+        </section>
+      <div class="clearfix"></div>`
+            for (let i = 0; i < playlists.length; i++) {
+
+            }
+        }
+    })
 }
 
 function logout() {
