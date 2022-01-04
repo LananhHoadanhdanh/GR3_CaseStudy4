@@ -206,7 +206,6 @@ function show_media_list(array) {
             <!--row-->
         </div>
     </div>`
-    console.log(html)
     document.getElementById("audio-player").innerHTML = html
 }
 
@@ -268,8 +267,8 @@ function searchByName(){
         type: "GET",
         url: "http://localhost:8080/singers/search?q=" + text,
         success: function (singers) {
-            console.log(singers);
-            show_singers(singers);
+            console.log(singers.content);
+            show_singers(singers.content);
         }
     })
 
