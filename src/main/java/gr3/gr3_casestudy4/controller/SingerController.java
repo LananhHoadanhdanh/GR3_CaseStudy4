@@ -42,7 +42,7 @@ public class SingerController {
     }
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Singer> create( Singer singer,  MultipartFile file){
+    public ResponseEntity<Singer> create( Singer singer, MultipartFile file){
         String nameFile=file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),

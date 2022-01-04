@@ -49,6 +49,37 @@ function createSinger(){
     })
 }
 
+function showCreateSong() {
+    document.getElementById("main").innerHTML = `<form enctype="multipart/form-data" id="form">
+<input type="text" name="name">
+<input type="text" name="description">
+<input type="text" name="lyrics">
+    <input type="file" name="file"/>
+    <button type="button" onclick="createSong()">Upload</button>
+
+</form>`;
+}
+
+function createSong() {
+    let form = document.getElementById("form");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/songs",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        success: function (mp3) {
+            console.log(mp3)
+            alert("Thêm thành công")
+        }
+    })
+}
+
 function show_media_list(array) {
     let html = `
     <div class="container">
