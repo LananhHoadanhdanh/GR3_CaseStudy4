@@ -1,4 +1,4 @@
-function homePage(user) {
+function homePage() {
     document.getElementById("ajaxArea").innerHTML = `
     <section id="albums"></section>
     <div class="clearfix"></div>
@@ -10,14 +10,37 @@ function homePage(user) {
             </div>
         </div>
     </section>`;
-    show_nav_bar(user);
+    show_nav_bar();
     get_home_playlist();
     get_home_songs();
-    get_home_singers()
+    get_home_singers();
+    show_media_list();
+}
+
+function show_media_list() {
+    let html = `<li data-title="A Thousand Year"
+                    data-artist="Christina Perri"
+                    data-mp3="assets/audio/A-Thousand-Year-Christina-peri.mp3"></li>
+                <li data-title="Hotaru"
+                    data-artist="Fujita Maiko"
+                    data-mp3="assets/audio/Hotaru-Fujita-Maiko.mp3"></li>
+                <li data-title="Lullaby"
+                    data-artist="Rauf & Faik"
+                    data-mp3="assets/audio/Lullaby.mp3"></li>
+                <li data-title="Sakura Sakura"
+                    data-artist="Rin'"
+                    data-mp3="assets/audio/SakuraSakura-Rin.mp3"></li>
+                <li data-title="Yuki no Hana"
+                    data-artist="Mika Nakashima"
+                    data-mp3="assets/audio/Yuki-no-Hana-Nakashima-Mika.mp3"></li>
+                <li data-title="Yume to Hazakura"
+                    data-artist="Wotamin"
+                    data-mp3="assets/audio/Yume-to-Hazakura-Wotamin.mp3"></li>`
+    document.getElementById("media-playlist").innerHTML = html
 
 }
 
-function show_nav_bar(user) {
+function show_nav_bar() {
     let html = `<div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle fa fa-navicon"></button>
@@ -33,65 +56,38 @@ function show_nav_bar(user) {
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
-
                     <ul class="nav navbar-nav">
-                        <li class="active dropdown"><a href="#" onclick="homePage(user)">Trang chủ <i
+                        <li class="active dropdown"><a href="#" onclick="homePage()">Trang chủ <i
                                 class="fa fa-caret-right"></i></a></li>
                         <li class="yamm-fw dropdown"><a href="#">Nghệ sĩ <i class="fa fa-caret-right"></i></a></li>
                         <li class="dropdown"><a href="#">Danh sách phát <i class="fa fa-caret-right"></i></a></li>`
-        if(user == null) {
+        if (localStorage.getItem("userAccId") == null) {
             html += `<li><a href="#" onclick="formRegister()">Đăng kí</a></li>
-                     <li><a href="#" onclick="formLogin()">Đăng nhập</a></li>`
+                        <li><a href="#" onclick="formLogin()">Đăng nhập</a></li>`
         }
-        if(user != null) {
-            html += `<li><a href="#">Đăng xuất</a></li>
-                     <li><a href="#"onclick="personal_page(user)">${user.username}</a></li>
-                     <li><a href="#"onclick="edit_personal_infor(user)">Sửa thông tin</a></li>`
+        if (localStorage.getItem("userAccId") != null) {
+            html += `<li><a href="#" onclick="logout()">Đăng xuất</a></li>
+                        <li><a href="#" onclick="personal_page(${localStorage.getItem("userAccId")})">${localStorage.getItem("userAccName")}</a></li>
+                    <li class="dropdown"><a href="#">Tạo Mới <i class="fa fa-caret-right"></i></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">Thêm bài hát</a> </li>
+                        <li><a href="#">Thêm danh sách</a> </li>
+                        <li><a href="#">Thêm ca sĩ</a> </li>
+                      </ul>
+                    </li>`
         }
-        html += `</ul>
+                    `</ul>
                 </div>
             </div>
         </div>`
     document.getElementById("nav-bar").innerHTML=html;
 }
 
-function home_slider() {
-    let html = `
-            <div class="container">
-                <div class="home-inner">
-                    <div id="homeSliderNav" class="slider-nav">
-                        <a id="home-prev" href="#" class="prev fa fa-chevron-left"></a>
-                        <a id="home-next" href="#" class="next fa fa-chevron-right"></a>
-                    </div><!--sliderNav-->
-                    <div id="flex-home" class="flexslider" data-animation="slide" data-animationSpeed="1000"
-                         data-autoPlay="true" data-slideshowSpeed="7000">
-                        <ul class="slides">
-                            <li><img src="assets/img/artist/keiko.png" alt="">
-                                <div class="flex-caption">
-                                    <h2>Kubota Keiko</h2>
-                                </div>
-                            </li>
-                            <li><img src="assets/img/artist/lisa.png" alt="">
-                                <div class="flex-caption">
-                                    <h2>LiSA</h2>
-                                </div>
-                            </li>
-                            <li><img src="assets/img/artist/taylor.png" alt="">
-                                <div class="flex-caption">
-                                    <h2>Taylor Swift</h2>
-                                </div>
-                            </li>
-                            <li><img src="assets/img/artist/rin.png" alt="">
-                                <div class="flex-caption">
-                                    <h2>Kagamine Rin & Len</h2>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>`
-    console.log(html)
-    document.getElementById("home-slider").innerHTML = html;
+function logout() {
+    localStorage.removeItem("token")
+    localStorage.removeItem("userAccId")
+    localStorage.removeItem("userAccName")
+    homePage()
 }
 
 function get_home_playlist() {
@@ -159,25 +155,13 @@ function show_song(array) {
     document.getElementById("latest_song").innerHTML = list
 }
 
-function show_media_list(array) {
-    let list = ``;
-    for (let i = 0; i < array.length; i++) {
-        list += `<li data-title="${array[i].name}"
-                    data-artist="${array[i].singer.name}"
-                    data-mp3="${array[i].mp3file}"></li>`
-    }
-    console.log(list)
-    document.getElementById("media-playlist").innerHTML = list;
-}
-
 function get_home_singers() {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/singers",
         success: function (singers) {
             console.log(singers);
-            show_singers(singers);
-            // show_media_list(songs.content)
+            show_singers(singers.content);
         }
     })
 }
@@ -260,7 +244,9 @@ function login() {
         success: function (user) {
             console.log(user)
             localStorage.setItem("token", user.accessToken)
-            homePage(user)
+            localStorage.setItem("userAccId", user.id)
+            localStorage.setItem("userAccName", user.username)
+            homePage()
         },
         error: function (error) {
         }
@@ -354,7 +340,8 @@ function register() {
     })
 }
 
-function personal_page(user) {
+function personal_page(userId) {
+    console.log(userId)
     document.getElementById("ajaxArea").innerHTML = `
     <section id="albums"></section>
     <div class="clearfix"></div>
@@ -366,18 +353,32 @@ function personal_page(user) {
             </div>
         </div>
     </section>`;
-    // home_slider();
-    get_personal_playlist(user);
-    get_personal_songs(user);
+    get_personal_playlist(userId);
+    get_personal_songs(userId);
 }
 
-function get_personal_playlist(user) {
+function get_personal_playlist(userId) {
+    console.log(userId)
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/users/" + user.id + "/playlists",
+        url: "http://localhost:8080/users/" + userId + "/playlists",
         headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
-        success: function (data) {
-            console.log(data);
+        success: function (playlists) {
+            console.log(playlists);
+            show_playlist(playlists)
+        }
+    });
+}
+
+function get_personal_songs(userId) {
+    console.log(userId)
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/users/" + userId + "/songs",
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (songs) {
+            console.log(songs);
+            show_song(songs)
         }
     });
 }
