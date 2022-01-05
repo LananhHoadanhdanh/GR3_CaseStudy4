@@ -506,7 +506,7 @@ function login() {
 }
 
 function formRegister() {
-    let form = `<section class="breadcrumb">
+    document.getElementById("ajaxArea").innerHTML = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -565,7 +565,6 @@ function formRegister() {
             </div>
         </section>
         <br> <br>`;
-    document.getElementById("ajaxArea").innerHTML = form;
 }
 
 function register() {

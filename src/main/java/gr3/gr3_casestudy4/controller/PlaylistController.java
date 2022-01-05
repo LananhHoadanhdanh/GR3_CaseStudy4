@@ -46,7 +46,7 @@ public class PlaylistController {
         String fileName=file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),
-                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\audio\\" + fileName));
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\artist\\" + fileName));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -87,5 +87,21 @@ public class PlaylistController {
     public ResponseEntity<Iterable<Playlist>> findAllByContaining(String q) {
         Iterable<Playlist> playlists = playlistService.findAllByNameContaining(q);
         return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Playlist> updateSong(@PathVariable Long id,@RequestBody Playlist playlist,MultipartFile file){
+        String fileName=file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\artist\\" + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        playlist.setImage(fileName);
+        playlist.setId(id);
+        playlistService.save(playlist);
+        return new ResponseEntity<>(playlist,HttpStatus.OK);
     }
 }
