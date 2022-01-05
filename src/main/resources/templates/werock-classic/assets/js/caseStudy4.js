@@ -16,7 +16,6 @@ function homePage() {
     get_home_singers();
 }
 
-//dũng làm update từ đây chị ghep giao diện vào nha e chưa biết lấy cái nào ?
 function showCreateSinger(){
     document.getElementById("ajaxArea").innerHTML = `
 <form enctype="multipart/form-data" id="form">
@@ -312,14 +311,23 @@ function get_all_singer(){
               <div class="artist-list">
                   <div class="row">`
             for (let i = 0; i < singers.content.length; i++) {
-                if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
+                if (singers.content[i].status == 1) {
                     html += `
-                <div class="col-lg-3 col-md-3 col-sm-4 xs-12">  
-                          <div class="artist">
-                              <img src="assets/img/artist/${singers.content[i].avatar}" alt="" width="100%"/>
-                              <a>${singers.content[i].name}</a>
-                          </div>
-                       </div>`
+                <div class="album">
+                      <img src="assets/img/artist/${singers.content[i].avatar}" alt=""/>
+                      <div class="hover">
+                          <ul>
+                              <li><a onclick="singer_detail(${singers.content[i].id})"><span class="fa fa-search"></span></a></li>`
+                              if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
+                                  html += `
+                                        <li><a onclick="form_update_detail(${singers.content[i].id})"><i class="fas fa-cog"></i></a></li>
+                                        <li><a onclick="remove_singer(${singers.content[i].id})"><i class="far fa-trash-alt"></i></a></li>`
+                              }
+
+                          html += `</ul>
+                          <h3>${singers.content[i].name}</h3>
+                      </div>
+                  </div>`
                 }
             }
             html += `
@@ -328,6 +336,83 @@ function get_all_singer(){
           </div><!--//container-->  
       </section>`
             document.getElementById("ajaxArea").innerHTML = html;
+        }
+    })
+}
+
+function singer_detail(id){
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/singers/" + id,
+        success: function (singer) {
+            console.log(singer)
+            let view = `
+            <section class="breadcrumb">
+             <div class="container">
+                  <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <h1>artist</h1>
+                          <h5>detail of artist</h5>
+                      </div>
+                      
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <ul>
+                              <li><a href="#">Home</a></li>
+                              <li><a href="#">artists</a></li>
+                              <li><a href="#">Detail</a></li>
+                          </ul>
+                      </div>
+                  </div>
+             </div>
+        </section>
+            <div class="clearfix"></div>
+            <section id="artists">
+            <div class="container">
+              <div class="row">
+                  <div class="artist-detail">
+                      <div class="artist">
+                          <div class="col-lg-4 col-md-4 col-sm-4">
+                          <figure class="artistFace">
+                              <img src="assets/img/artist/${singer.avatar}" alt=""/>
+                             </figure> 
+                          </div>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <div class="artist-detail-content">
+                                  <h3>${singer.name}</h3>
+                                  <p>${singer.description}</p>
+                              </div><!--//artist-detail-content-->
+                              
+                              <div class="artist-tracks">
+                                  <h1>Danh sách bài hát</h1>`
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/singers/" + id + "/songs",
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+                success: function (songs) {
+                    console.log(songs.content);
+                    for (let i = 0; i < songs.content.length; i++) {
+                        view += `
+                        <div class="track clearfix">
+                            <div class="track_title" onclick="song_detail(${songs.content[i].id})">${songs.content[i].name}</div>
+                            <div class="track_listen">
+                                <span><audio controls>
+                              <source src="assets/audio/${songs.content[i].mp3file}" type="audio/mpeg">
+                          </audio></span>
+                            </div>
+                        </div>`
+                    }
+                    view += `
+            </div><!--artist tracks-->
+                          </div>
+                      </div><!--\\\\artist-->
+                  </div><!--//artist detail-->
+              </div><!--row-->
+          </div><!--//container-->  
+      </section>`
+                    document.getElementById("ajaxArea").innerHTML = view;
+                }
+            });
+
         }
     })
 }
