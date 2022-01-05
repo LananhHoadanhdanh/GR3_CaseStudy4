@@ -16,15 +16,125 @@ function homePage() {
     get_home_singers();
 }
 
+//dũng làm update từ đây chị ghep giao diện vào nha e chưa biết lấy cái nào ?
+function showUpdateSong(id) {
+    $.ajax({
+        type: "Get",
+        url: "http://localhost:8080/songs/" + id,
+        success: function (song) {
+            console.log(song)
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/singers",
+                success: function (singers) {
+                    console.log(singers.content)
+                    let form = `<section class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h1>Tải bài hát</h1>
+                        <h5>Thông tin bài hát</h5>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Thêm bài hát</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                        <form id="contactform" enctype="multipart/form-data">
+                          <div class="row">
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Tên lên bài hát:</h5>
+                                  <input type="text" id="name" name="name" value="${song.name}"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Mô tả:</h5>
+                                   <input type="text" name="description" id="description" value="${song.description}"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>File bài hát:</h5>
+                                   <input type="file" name="file" id="file" value="${song.mp3file}"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Ca sĩ:</h5>
+                                  <select name="singer" id="singer">
+                                    <option value="${song.singer.id}">${song.singer.name}</option>`
+                    for (let i = 0; i < singers.content.length; i++) {
+                        form +=  `<option value="${singers.content[i].id}">${singers.content[i].name}</option>`
+                    }
+                    form += `</select>
+                              </div>
+                              <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+                          </div>
+                          <div class="row">
+                              <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h5>Lời bài hát:</h5>
+                                  <textarea name="lyrics" id="message">${song.lyrics}</textarea>
+                              </div>
+                          </div>
+                          <button id="submit1" type="submit" onclick="updateSong()">Cập nhật bài hát</button>
+                      </form>
+                            <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
+                        </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <p>Nhà số 23, Lô TT-01, Khu đô thị MonCity, P. Hàm Nghi, Hà Nội</p>
+                        <i class="fa fa-mobile-phone"></i>
+                        <p>0988666888</p>
+                        <b class=" fa fa-envelope"></b>
+                        <p>gr3@c0821i1.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+                    console.log(form)
+                    document.getElementById("ajaxArea").innerHTML = form;
+                }
+            })
+        }
+    })
+
+}
+
+function updateSong(id){
+    let form = document.getElementById("contactform");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "PUT",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/songs/" + id,
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (mp3) {
+            console.log(mp3)
+            alert("Sửa thành công")
+        }
+    })
+}
+
 function showCreateSinger(){
     document.getElementById("ajaxArea").innerHTML = `
-<form enctype="multipart/form-data" id="form">
-     <input type="text" name="name">
-     <input type="text" name="description">
-     <input type="file" name="file"/>
-     <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
-     <button type="button" onclick="createSinger()">Upload</button>
-</form>`;
+        <form enctype="multipart/form-data" id="form">
+             <input type="text" name="name">
+             <input type="text" name="description">
+             <input type="file" name="file"/>
+             <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+             <button type="button" onclick="createSinger()">Upload</button>
+        </form>`;
 }
 
 function createSinger(){
@@ -49,6 +159,11 @@ function createSinger(){
 }
 
 function showCreateSong() {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "http://localhost:8080/singers",
+                                    success: function (singers) {
+                                        console.log(singers.content)
     let form = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
@@ -87,7 +202,11 @@ function showCreateSong() {
                               </div>
                               <div class="col-lg-5 col-md-5 col-sm-5">
                                   <h5>Ca sĩ:</h5>
-                                   <input type="number" name="singer" id="singer" />
+                                  <select name="singer" id="singer">`
+                                        for (let i = 0; i < singers.content.length; i++) {
+                                            form +=  `<option value="${singers.content[i].id}">${singers.content[i].name}</option>`
+                                        }
+                            form += `</select>
                               </div>
                               <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
                           </div>
@@ -111,9 +230,12 @@ function showCreateSong() {
                     </div>
                 </div>
             </div>
-        </section>
-        <br> <br>`;
+        </section>`;
+    console.log(form)
     document.getElementById("ajaxArea").innerHTML = form;
+    }
+    })
+
 }
 
 function createSong() {
@@ -311,23 +433,14 @@ function get_all_singer(){
               <div class="artist-list">
                   <div class="row">`
             for (let i = 0; i < singers.content.length; i++) {
-                if (singers.content[i].status == 1) {
+                if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
                     html += `
-                <div class="album">
-                      <img src="assets/img/artist/${singers.content[i].avatar}" alt=""/>
-                      <div class="hover">
-                          <ul>
-                              <li><a onclick="singer_detail(${singers.content[i].id})"><span class="fa fa-search"></span></a></li>`
-                              if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
-                                  html += `
-                                        <li><a onclick="form_update_detail(${singers.content[i].id})"><i class="fas fa-cog"></i></a></li>
-                                        <li><a onclick="remove_singer(${singers.content[i].id})"><i class="far fa-trash-alt"></i></a></li>`
-                              }
-
-                          html += `</ul>
-                          <h3>${singers.content[i].name}</h3>
-                      </div>
-                  </div>`
+                <div class="col-lg-3 col-md-3 col-sm-4 xs-12">  
+                          <div class="artist">
+                              <img src="assets/img/artist/${singers.content[i].avatar}" alt="" width="100%"/>
+                              <a>${singers.content[i].name}</a>
+                          </div>
+                       </div>`
                 }
             }
             html += `
@@ -336,83 +449,6 @@ function get_all_singer(){
           </div><!--//container-->  
       </section>`
             document.getElementById("ajaxArea").innerHTML = html;
-        }
-    })
-}
-
-function singer_detail(id){
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8080/singers/" + id,
-        success: function (singer) {
-            console.log(singer)
-            let view = `
-            <section class="breadcrumb">
-             <div class="container">
-                  <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                          <h1>artist</h1>
-                          <h5>detail of artist</h5>
-                      </div>
-                      
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                          <ul>
-                              <li><a href="#">Home</a></li>
-                              <li><a href="#">artists</a></li>
-                              <li><a href="#">Detail</a></li>
-                          </ul>
-                      </div>
-                  </div>
-             </div>
-        </section>
-            <div class="clearfix"></div>
-            <section id="artists">
-            <div class="container">
-              <div class="row">
-                  <div class="artist-detail">
-                      <div class="artist">
-                          <div class="col-lg-4 col-md-4 col-sm-4">
-                          <figure class="artistFace">
-                              <img src="assets/img/artist/${singer.avatar}" alt=""/>
-                             </figure> 
-                          </div>
-                           <div class="col-lg-8 col-md-8 col-sm-8">
-                              <div class="artist-detail-content">
-                                  <h3>${singer.name}</h3>
-                                  <p>${singer.description}</p>
-                              </div><!--//artist-detail-content-->
-                              
-                              <div class="artist-tracks">
-                                  <h1>Danh sách bài hát</h1>`
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:8080/singers/" + id + "/songs",
-                headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
-                success: function (songs) {
-                    console.log(songs.content);
-                    for (let i = 0; i < songs.content.length; i++) {
-                        view += `
-                        <div class="track clearfix">
-                            <div class="track_title" onclick="song_detail(${songs.content[i].id})">${songs.content[i].name}</div>
-                            <div class="track_listen">
-                                <span><audio controls>
-                              <source src="assets/audio/${songs.content[i].mp3file}" type="audio/mpeg">
-                          </audio></span>
-                            </div>
-                        </div>`
-                    }
-                    view += `
-            </div><!--artist tracks-->
-                          </div>
-                      </div><!--\\\\artist-->
-                  </div><!--//artist detail-->
-              </div><!--row-->
-          </div><!--//container-->  
-      </section>`
-                    document.getElementById("ajaxArea").innerHTML = view;
-                }
-            });
-
         }
     })
 }
@@ -483,7 +519,8 @@ function show_song(array) {
     for (let i = 0; i < array.length; i++) {
         list += `<div class="news-feed">
                           <img src="assets/img/artist/${array[i].singer.avatar}" alt="dummy">
-                          <a href="#">${array[i].name} - ${array[i].singer.name}</a>
+                          <a>${array[i].name} - ${array[i].singer.name}</a>
+                          <a onclick="showUpdateSong(${array[i].id})">UPDATE</a>
                           <audio controls>
                               <source src="assets/audio/${array[i].mp3file}" type="audio/mpeg">
                           </audio>
