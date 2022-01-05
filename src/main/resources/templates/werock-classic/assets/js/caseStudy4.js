@@ -312,13 +312,15 @@ function get_all_singer(){
               <div class="artist-list">
                   <div class="row">`
             for (let i = 0; i < singers.content.length; i++) {
-                html += `
+                if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
+                    html += `
                 <div class="col-lg-3 col-md-3 col-sm-4 xs-12">  
                           <div class="artist">
                               <img src="assets/img/artist/${singers.content[i].avatar}" alt="" width="100%"/>
                               <a>${singers.content[i].name}</a>
                           </div>
                        </div>`
+                }
             }
             html += `
             </div><!--//artist list-->
