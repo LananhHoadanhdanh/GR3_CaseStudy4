@@ -125,6 +125,7 @@ function updateSong(id){
         }
     })
 }
+
 function showUpdateSinger(id) {
     let str = ``
     $.ajax({
@@ -132,29 +133,76 @@ function showUpdateSinger(id) {
         url: "http://localhost:8080/singers/" + id,
         success: function (singer) {
             console.log(singer)
-            str += `<form enctype="multipart/form-data" id="form">
-<img src="assets/img/artist/${singer.avatar}">
-<input type="text" name="name" value="${singer.name}">
-<input type="text" name="description" value="${singer.description}">
- <input type="file" name="file"/>
+            let form = `<section class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h1>Thêm nghệ</h1>
+                        <h5>Thông tin nghệ</h5>
+                    </div>
 
-  `;
-            str += `<button type="button" onclick="updateSinger(${singer.id})">Upload</button>
-                </form>`
-            document.getElementById("ajaxArea").innerHTML=str;
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Thêm nghệ sĩ</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                        <form id="contactform" enctype="multipart/form-data">
+                          <div class="row">
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Tên nghệ sĩ:</h5>
+                                  <input type="text" id="name" name="name" value="${singer.name}"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Ảnh nghệ sĩ:</h5>
+                                   <input type="file" name="file" id="file" value="${singer.avatar}"/>
+                              </div>
+                              <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+                              <input type="hidden" name="status" value="1">
+                          </div>
+                          <div class="row">
+                              <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h5>Mô tả:</h5>
+                                  <textarea name="description" id="message">${singer.description}</textarea>
+                              </div>
+                          </div>
+                          <button id="submit1" type="submit" onclick="updateSinger(${id})">Cập nhật nhệ sĩ</button>
+                      </form>
+                            <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
+                        </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <p>Nhà số 23, Lô TT-01, Khu đô thị MonCity, P. Hàm Nghi, Hà Nội</p>
+                        <i class="fa fa-mobile-phone"></i>
+                        <p>0988666888</p>
+                        <b class=" fa fa-envelope"></b>
+                        <p>gr3@c0821i1.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+            console.log(form)
+            document.getElementById("ajaxArea").innerHTML = form;
         }
-
     })
-
 }
+
 function updateSinger(id){
-    let form = document.getElementById("form");
+    let form = document.getElementById("contactform");
     let data = new FormData(form);
     console.log(data)
     $.ajax({
         type: "PUT",
         enctype: 'multipart/form-data',
-        url: "http://localhost:8080/singers/"+id,
+        url: "http://localhost:8080/singers/" + id,
         data: data,
         processData: false,
         contentType: false,
@@ -162,24 +210,74 @@ function updateSinger(id){
         timeout: 1000000,
         success: function (song) {
             console.log(song)
-            alert("sửa thành công b ưi")
+            alert("Cập nhật thành công!")
         }
     })
 }
 
 function showCreateSinger(){
-    document.getElementById("ajaxArea").innerHTML = `
-        <form enctype="multipart/form-data" id="form">
-             <input type="text" name="name">
-             <input type="text" name="description">
-             <input type="file" name="file"/>
-             <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
-             <button type="button" onclick="createSinger()">Upload</button>
-        </form>`;
+    let form = `<section class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h1>Thêm nghệ</h1>
+                        <h5>Thông tin nghệ</h5>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Thêm nghệ sĩ</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                        <form id="contactform" enctype="multipart/form-data">
+                          <div class="row">
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Tên nghệ sĩ:</h5>
+                                  <input type="text" id="name" name="name"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Ảnh nghệ sĩ:</h5>
+                                   <input type="file" name="file" id="file" />
+                              </div>
+                              <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+                              <input type="hidden" name="status" value="1">
+                          </div>
+                          <div class="row">
+                              <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h5>Mô tả:</h5>
+                                  <textarea name="description" id="message"></textarea>
+                              </div>
+                          </div>
+                          <button id="submit1" type="submit" onclick="createSinger()">Thêm ca sĩ</button>
+                      </form>
+                            <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
+                        </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <p>Nhà số 23, Lô TT-01, Khu đô thị MonCity, P. Hàm Nghi, Hà Nội</p>
+                        <i class="fa fa-mobile-phone"></i>
+                        <p>0988666888</p>
+                        <b class=" fa fa-envelope"></b>
+                        <p>gr3@c0821i1.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+    console.log(form)
+    document.getElementById("ajaxArea").innerHTML = form;
 }
 
 function createSinger(){
-    let form = document.getElementById("form");
+    let form = document.getElementById("contactform");
     let data = new FormData(form);
     console.log(data)
     $.ajax({
@@ -200,11 +298,11 @@ function createSinger(){
 }
 
 function showCreateSong() {
-                                $.ajax({
-                                    type: "GET",
-                                    url: "http://localhost:8080/singers",
-                                    success: function (singers) {
-                                        console.log(singers.content)
+$.ajax({
+type: "GET",
+url: "http://localhost:8080/singers",
+success: function (singers) {
+    console.log(singers.content)
     let form = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
@@ -586,6 +684,7 @@ function show_singers(array) {
     for (let i = 0; i < array.length; i++) {
         html += `<div class="video-feed">
                      <img src="assets/img/artist/${array[i].avatar}" alt=""/>
+                     <a onclick="showUpdateSinger(${array[i].id})">UPDATE</a>
                      <a href="video-detail.html"><span class="fa fa-play"></span></a>
                      <h6>${array[i].name}</h6>
                  </div>`
