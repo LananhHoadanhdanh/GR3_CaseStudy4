@@ -43,7 +43,15 @@ public class SongController {
     }
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Song> updateSong(@PathVariable Long id,@RequestBody Song song){
+    public ResponseEntity<Song> updateSong(@PathVariable Long id, Song song,MultipartFile file){
+        String fileName=file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\audio\\" + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        song.setMp3file(fileName);
         LocalDateTime time=LocalDateTime.now();
         song.setCreateTime(time);
         song.setId(id);

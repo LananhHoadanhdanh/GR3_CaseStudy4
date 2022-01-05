@@ -17,6 +17,51 @@ function homePage() {
 }
 
 //dũng làm update từ đây chị ghep giao diện vào nha e chưa biết lấy cái nào ?
+function showUpdateSong(id) {
+    let str = ``
+    $.ajax({
+        type: "Get",
+        url: "http://localhost:8080/songs/" + id,
+        success: function (song) {
+            console.log(song)
+            str += `<form enctype="multipart/form-data" id="form">
+
+<input type="hidden" name="name" value="${song.id}">
+<input type="text" name="name" value="${song.name}">
+<input type="text" name="description" value="${song.description}">
+<input type="text" name="lyrics" value="${song.lyrics}">
+ <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+ <input type="file" name="file"/>
+
+  `;
+            str += `<button type="button" onclick="updateSong(${song.id})">Upload</button>
+                </form>`
+            document.getElementById("ajaxArea").innerHTML=str;
+        }
+
+    })
+
+}
+function updateSong(id){
+    let form = document.getElementById("form");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "PUT",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/songs/"+id,
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        success: function (song) {
+            console.log(song)
+            alert("sửa thành công b ưi")
+        }
+    })
+}
+
 function showCreateSinger(){
     document.getElementById("ajaxArea").innerHTML = `
 <form enctype="multipart/form-data" id="form">
