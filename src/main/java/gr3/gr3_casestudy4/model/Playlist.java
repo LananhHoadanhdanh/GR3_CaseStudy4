@@ -31,17 +31,17 @@ public class Playlist {
         this.user = user;
     }
 
-    public Playlist(String name, String image, User user, Set<Song> songs) {
+    public Playlist(String name, User user, int status) {
+        this.name = name;
+        this.user = user;
+        this.status = status;
+    }
+
+    public Playlist(String name, String image, User user, int status) {
         this.name = name;
         this.image = image;
         this.user = user;
-        this.songs = songs;
-    }
-
-    public Playlist(String name, User user, Set<Song> songs) {
-        this.name = name;
-        this.user = user;
-        this.songs = songs;
+        this.status = status;
     }
 
     public Long getId() {

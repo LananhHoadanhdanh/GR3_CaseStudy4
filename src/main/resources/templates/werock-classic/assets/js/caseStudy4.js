@@ -220,6 +220,88 @@ function show_update_playlist(id) {
 
 }
 
+function show_create_playlist(){
+    let form = `<section class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h1>Thêm danh sách phát</h1>
+                        <h5>Thông tin danh sách</h5>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Thêm danh sách phát</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                        <form id="contactform" enctype="multipart/form-data">
+                          <div class="row">
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Tên danh sách:</h5>
+                                  <input type="text" id="name" name="name"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Ảnh minh họa:</h5>
+                                   <input type="file" name="file" id="file"/>
+                              </div>
+                              <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+                              <input type="hidden" name="status" value="1">
+                          </div>
+<!--                          <div class="row">-->
+<!--                              <div class="col-lg-12 col-md-12 col-sm-12">-->
+<!--                                  <h5>Mô tả:</h5>-->
+<!--                                  <textarea name="description" id="message"></textarea>-->
+<!--                              </div>-->
+<!--                          </div>-->
+                          <button id="submit1" type="submit" onclick="createPlaylist()">Thêm danh sách</button>
+                      </form>
+                            <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
+                        </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <p>Nhà số 23, Lô TT-01, Khu đô thị MonCity, P. Hàm Nghi, Hà Nội</p>
+                        <i class="fa fa-mobile-phone"></i>
+                        <p>0988666888</p>
+                        <b class=" fa fa-envelope"></b>
+                        <p>gr3@c0821i1.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+    console.log(form)
+    document.getElementById("ajaxArea").innerHTML = form;
+}
+
+function createPlaylist() {
+    let form = document.getElementById("contactform");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/playlists",
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        success: function (playlist) {
+            console.log(playlist)
+            alert("Thêm thành công")
+        }
+    })
+}
+
 function showCreateSinger(){
     let form = `<section class="breadcrumb">
             <div class="container">
@@ -503,7 +585,7 @@ function show_nav_bar() {
                     <li class="dropdown"><a href="#">Tạo Mới <i class="fa fa-caret-right"></i></a>
                       <ul class="dropdown-menu">
                         <li><a onclick="showCreateSong()">Thêm bài hát</a> </li>
-                        <li><a >Thêm danh sách</a> </li>
+                        <li><a onclick="show_create_playlist()">Thêm danh sách</a> </li>
                         <li><a onclick="showCreateSinger()">Thêm ca sĩ</a> </li>
                       </ul>
                     </li>`
@@ -688,6 +770,51 @@ function song_detail(id) {
         url: "http://localhost:8080/songs/" + id,
         success: function (song) {
             console.log(song)
+            let view = `
+             <section class="breadcrumb">
+                 <div class="container">
+                      <div class="row">
+                          <div class="col-lg-6 col-md-6 col-sm-6">
+                              <h1>Bài hát</h1>
+                              <h5>Thông tin bài hát</h5>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-6">
+                              <ul>
+                                  <li><a href="#">Trang chủ</a></li>
+                                  <li><a href="#">Bài hát</a></li>
+                                  <li><a href="#">Thông tin</a></li>
+                              </ul>
+                          </div>
+                      </div>
+                 </div>
+             </section>
+             <div class="clearfix"></div>
+             <section id="artists">
+            <div class="container">
+              <div class="row">
+                  <div class="artist-detail">
+                      <div class="artist">
+                          <div class="col-lg-4 col-md-4 col-sm-4">
+                          <figure class="artistFace">
+                          <img src="assets/img/artist/${song.singer.avatar}" alt="" style="margin-bottom: 20px" width="100%"/>
+                          <audio controls style="margin-left: 30px">
+                              <source src="assets/audio/${song.mp3file}" type="audio/mpeg">
+                          </audio>
+                             </figure> 
+                          </div>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <div class="artist-detail-content">
+                                  <h3>${song.name} - ${song.singer.name}</h3>
+                                  <h5>${song.description}</h5>
+                                  <p>${song.lyrics}</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>`
+      document.getElementById("ajaxArea").innerHTML = view;
         }
     })
 }
@@ -721,21 +848,23 @@ function show_playlist(array) {
               </div>
         <div class="albums-carousel">`
     for (let i = 0; i < array.length; i++) {
-        html += `
+        if (array[i].status == 1) {
+            html += `
             <div class="album">
                 <img src="assets/img/albums/${array[i].image}" alt=""/>
                       <div class="hover">
                           <ul>
-                              <li><a href="assets/img/albums/${array[i].image}" data-rel="prettyPhoto"><span class="fa fa-search"  ></span></a></li>`
-                        if (array[i].user.id == localStorage.getItem("userAccId")) {
-                            html += `<li><a onclick="show_update_playlist(${array[i].id})"><i class="fas fa-cog"></i></a></li>
+                              <li><a href="assets/img/albums/${array[i].image}" data-rel="prettyPhoto"><span class="fa fa-search"></span></a></li>`
+            if (array[i].user.id == localStorage.getItem("userAccId")) {
+                html += `<li><a onclick="show_update_playlist(${array[i].id})"><i class="fas fa-cog"></i></a></li>
                                      <li><a onclick="removePlaylist(${array[i].id})"><i class="far fa-trash-alt"></i></a></li>`
-                        }
-                      html +=    `</ul>
+            }
+            html +=    `</ul>
                           <h3>${array[i].name}</h3>
                           <h2>${array[i].songs.length} bài hát</h2>
                       </div>
                   </div>`
+        }
     }
     html += `</div>
               </div>
@@ -1056,8 +1185,8 @@ function personal_page(userId) {
     <section id="updates">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_song"></div><!--latest songs-->
-                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_artists"></div><!--latest artists-->
+                <div class="col-lg-5 col-md-5 col-sm-6" id="latest_song"></div><!--latest songs-->
+                <div class="col-lg-7 col-md-7 col-sm-6" id="latest_artists"></div><!--latest artists-->
             </div>
         </div>
     </section>`;
