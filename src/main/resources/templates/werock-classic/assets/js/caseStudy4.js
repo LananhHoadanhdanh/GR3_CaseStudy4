@@ -572,14 +572,22 @@ function get_all_singer(){
               <div class="artist-list">
                   <div class="row">`
             for (let i = 0; i < singers.content.length; i++) {
-                if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
+                if (singers.content[i].status == 1) {
                     html += `
-                <div class="col-lg-3 col-md-3 col-sm-4 xs-12">  
-                          <div class="artist">
-                              <img src="assets/img/artist/${singers.content[i].avatar}" alt="" width="100%"/>
-                              <a>${singers.content[i].name}</a>
-                          </div>
-                       </div>`
+                    <div class="album">
+                      <img src="assets/img/artist/${singers.content[i].avatar}" alt=""/>
+                      <div class="hover">
+                          <ul>
+                              <li><a onclick="singer_detai(${singers.content[i].id})"><span class="fa fa-search"></span></a></li>`
+                              if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
+                                  html += `<li><a onclick="showUpdateSinger(${singers.content[i].id})"><i class="fas fa-cog"></i></a></li>
+                                            <li><a ><i class="far fa-trash-alt"></i></a></li>`
+                              }
+                          html +=
+                          `</ul>
+                          <h3>${singers.content[i].name}</h3>
+                      </div>
+                  </div>`
                 }
             }
             html += `
