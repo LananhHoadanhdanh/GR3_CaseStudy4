@@ -81,7 +81,7 @@ function showUpdateSong(id) {
                                   <textarea name="lyrics" id="message">${song.lyrics}</textarea>
                               </div>
                           </div>
-                          <button id="submit1" type="submit" onclick="updateSong()">Cập nhật bài hát</button>
+                          <button id="submit1" type="submit" onclick="updateSong(${song.id})">Cập nhật bài hát</button>
                       </form>
                             <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
                         </div>
@@ -122,6 +122,7 @@ function updateSong(id){
         success: function (mp3) {
             console.log(mp3)
             alert("Sửa thành công")
+            homePage()
         }
     })
 }
@@ -581,7 +582,7 @@ function get_all_singer(){
                               <li><a onclick="singer_detail(${singers.content[i].id})"><span class="fa fa-search"></span></a></li>`
                               if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
                                   html += `<li><a onclick="showUpdateSinger(${singers.content[i].id})"><i class="fas fa-cog"></i></a></li>
-                                            <li><a ><i class="far fa-trash-alt"></i></a></li>`
+                                           <li><a onclick="removeSinger(${singers.content[i].id})"><i class="far fa-trash-alt"></i></a></li>`
                               }
                           html +=
                           `</ul>
@@ -677,6 +678,16 @@ function singer_detail(id){
     })
 }
 
+function song_detail(id) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/songs/" + id,
+        success: function (song) {
+            console.log(song)
+        }
+    })
+}
+
 function logout() {
     localStorage.removeItem("token")
     localStorage.removeItem("userAccId")
@@ -741,16 +752,84 @@ function get_home_songs() {
 function show_song(array) {
     let list = `<h1>Latest songs</h1>`
     for (let i = 0; i < array.length; i++) {
-        list += `<div class="news-feed">
-                          <img src="assets/img/artist/${array[i].singer.avatar}" alt="dummy">
-                          <a>${array[i].name} - ${array[i].singer.name}</a>
-                          <a onclick="showUpdateSong(${array[i].id})">UPDATE</a>
-                          <audio controls>
+        if (array[i].status == 1) {
+            list += `<div class="news-feed row">
+                          <img src="assets/img/artist/${array[i].singer.avatar}" alt=""/>
+                          <a onclick="song_detail(${array[i].id})">${array[i].name} - ${array[i].singer.name}</a>`
+                if (array[i].user.id == localStorage.getItem("userAccId")) {
+                    list += `<a onclick="showUpdateSong(${array[i].id})"><i class="fas fa-cog"></i></a>
+                             <a onclick="removeSong(${array[i].id})"><i class="fas fa-trash-alt"></i></i></a>`
+                }
+                list += `<audio controls>
                               <source src="assets/audio/${array[i].mp3file}" type="audio/mpeg">
                           </audio>
                       </div>`
+        }
     }
     document.getElementById("latest_song").innerHTML = list
+}
+
+function removeSong(id) {
+    if (confirm("Are you sure?")) {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                "Authorization": 'Bearer ' + localStorage.getItem("token")
+            },
+            type: 'DELETE',
+            url: 'http://localhost:8080/songs/' + id,
+            success: function () {
+                alert("Đã xóa bài hát")
+                homePage()
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+}
+
+function removeSinger(id) {
+    if (confirm("Are you sure?")) {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                "Authorization": 'Bearer ' + localStorage.getItem("token")
+            },
+            type: 'DELETE',
+            url: 'http://localhost:8080/singers/' + id,
+            success: function () {
+                alert("Đã xóa ca sĩ")
+                homePage()
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+}
+
+function removePlaylist(id) {
+    if (confirm("Are you sure?")) {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                "Authorization": 'Bearer ' + localStorage.getItem("token")
+            },
+            type: 'DELETE',
+            url: 'http://localhost:8080/playlists/' + id,
+            success: function () {
+                alert("Đã xóa danh sách phát")
+                homePage()
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
 }
 
 function get_home_singers() {
@@ -848,6 +927,8 @@ function login() {
             homePage()
         },
         error: function (error) {
+            console.log(error)
+            alert("Sai tài khoản hoặc mật khẩu!")
         }
     });
 }

@@ -81,14 +81,14 @@ public class SingerController {
         return new  ResponseEntity<>(singer,HttpStatus.OK);
     }
     @GetMapping("/{id}/songs")
-    public ResponseEntity<Page<Song>> findAllSong(@PathVariable Long id,@PageableDefault(value = 6)Pageable pageable) {
+    public ResponseEntity<Page<Song>> findAllSong(@PathVariable Long id,@PageableDefault(value = 100)Pageable pageable) {
         Optional<Singer> singer=singerService.findById(id);
         Page<Song> songs=songService.findAllBySinger(singer.get(),pageable);
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Singer>> findByName(@PageableDefault(value = 6)Pageable pageable, @RequestParam String q) {
+    public ResponseEntity<Page<Singer>> findByName(@PageableDefault(value = 100)Pageable pageable, @RequestParam String q) {
         Page<Singer> singers = singerService.findAllByNameContaining(q, pageable);
         return new ResponseEntity<>(singers, HttpStatus.OK);
     }
