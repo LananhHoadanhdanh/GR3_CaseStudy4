@@ -125,6 +125,47 @@ function updateSong(id){
         }
     })
 }
+function showUpdateSinger(id) {
+    let str = ``
+    $.ajax({
+        type: "Get",
+        url: "http://localhost:8080/singers/" + id,
+        success: function (singer) {
+            console.log(singer)
+            str += `<form enctype="multipart/form-data" id="form">
+<img src="assets/img/artist/${singer.avatar}">
+<input type="text" name="name" value="${singer.name}">
+<input type="text" name="description" value="${singer.description}">
+ <input type="file" name="file"/>
+
+  `;
+            str += `<button type="button" onclick="updateSinger(${singer.id})">Upload</button>
+                </form>`
+            document.getElementById("ajaxArea").innerHTML=str;
+        }
+
+    })
+
+}
+function updateSinger(id){
+    let form = document.getElementById("form");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "PUT",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/singers/"+id,
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        success: function (song) {
+            console.log(song)
+            alert("sửa thành công b ưi")
+        }
+    })
+}
 
 function showCreateSinger(){
     document.getElementById("ajaxArea").innerHTML = `

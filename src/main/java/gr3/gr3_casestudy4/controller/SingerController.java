@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,21 @@ public class SingerController {
     public ResponseEntity<Page<Singer>> findAll(@PageableDefault(value = 6)Pageable pageable){
         Page<Singer> singers=singerService.findAll(pageable);
         return new ResponseEntity<>(singers, HttpStatus.OK);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Singer> updateSinger(@PathVariable Long id, Singer singer,MultipartFile file){
+        String fileName=file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\artist\\" + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        singer.setAvatar(fileName);
+        LocalDateTime time=LocalDateTime.now();
+        singer.setId(id);
+        singerService.save(singer);
+        return new ResponseEntity<>(singer,HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
