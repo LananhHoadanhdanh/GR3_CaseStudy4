@@ -42,11 +42,11 @@ public class PlaylistController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Playlist> createplayLisst(Playlist playlist, MultipartFile file){
+    public ResponseEntity<Playlist> createPlayList(Playlist playlist, MultipartFile file){
         String fileName=file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),
-                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\audio\\" + fileName));
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\albums\\" + fileName));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

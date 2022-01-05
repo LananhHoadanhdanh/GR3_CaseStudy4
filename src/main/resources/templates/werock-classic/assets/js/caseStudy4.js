@@ -5,8 +5,8 @@ function homePage() {
     <section id="updates">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_song"></div><!--latest songs-->
-                <div class="col-lg-6 col-md-6 col-sm-6" id="latest_artists"></div><!--latest artists-->
+                <div class="col-lg-5 col-md-5 col-sm-6" id="latest_song"></div><!--latest songs-->
+                <div class="col-lg-7 col-md-7 col-sm-6" id="latest_artists"></div><!--latest artists-->
             </div>
         </div>
     </section>`;
@@ -214,6 +214,10 @@ function updateSinger(id){
             alert("Cập nhật thành công!")
         }
     })
+}
+
+function show_update_playlist(id) {
+
 }
 
 function showCreateSinger(){
@@ -722,9 +726,12 @@ function show_playlist(array) {
                 <img src="assets/img/albums/${array[i].image}" alt=""/>
                       <div class="hover">
                           <ul>
-                              <li><a href="assets/img/albums/${array[i].image}" data-rel="prettyPhoto"><span class="fa fa-search"  ></span></a></li>
-                              <li><a href="album-detail.html"><span class="fa fa-link"></span></a></li>
-                          </ul>
+                              <li><a href="assets/img/albums/${array[i].image}" data-rel="prettyPhoto"><span class="fa fa-search"  ></span></a></li>`
+                        if (array[i].user.id == localStorage.getItem("userAccId")) {
+                            html += `<li><a onclick="show_update_playlist(${array[i].id})"><i class="fas fa-cog"></i></a></li>
+                                     <li><a onclick="removePlaylist(${array[i].id})"><i class="far fa-trash-alt"></i></a></li>`
+                        }
+                      html +=    `</ul>
                           <h3>${array[i].name}</h3>
                           <h2>${array[i].songs.length} bài hát</h2>
                       </div>
@@ -844,15 +851,36 @@ function get_home_singers() {
 }
 
 function show_singers(array) {
-    let html = `<h1>Latest artists</h1>`
-    for (let i = 0; i < array.length; i++) {
-        html += `<div class="video-feed">
-                     <img src="assets/img/artist/${array[i].avatar}" alt=""/>
-                     <a onclick="showUpdateSinger(${array[i].id})">UPDATE</a>
-                     <a href="video-detail.html"><span class="fa fa-play"></span></a>
-                     <h6>${array[i].name}</h6>
-                 </div>`
-    }
+    let html = `
+    <section id="artists">
+        <div class="container">
+        <h1>Latest Artist</h1>
+            <div class="artist-list">
+                <div class="row">`
+                    for (let i = 0; i < array.length; i++) {
+                        if (array[i].status == 1) {
+                        html += `
+                     <div class="album">
+                      <img src="assets/img/artist/${array[i].avatar}" alt=""/>
+                      <div class="hover">
+                          <ul>
+                              <li><a onclick="singer_detail(${array[i].id})"><span class="fa fa-search"></span></a></li>`
+                        if (array[i].user.id == localStorage.getItem("userAccId")) {
+                        html += `<li><a onclick="showUpdateSinger(${array[i].id})"><i class="fas fa-cog"></i></a></li>
+                                           <li><a onclick="removeSinger(${array[i].id})"><i class="far fa-trash-alt"></i></a></li>`
+                    }
+                        html +=
+                        `</ul>
+                          <h3>${array[i].name}</h3>
+                      </div>
+                  </div>`
+                    }
+                    }
+                    html += `
+                </div><!--//artist list-->
+            </div><!--row-->
+        </div><!--//container-->
+    </section>`
     document.getElementById("latest_artists").innerHTML = html
 }
 

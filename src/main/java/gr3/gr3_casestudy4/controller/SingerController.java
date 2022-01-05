@@ -36,8 +36,8 @@ public class SingerController {
         return new ResponseEntity<>(singers, HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Singer> updateSinger(@PathVariable Long id, Singer singer,MultipartFile file){
-        String fileName=file.getOriginalFilename();
+    public ResponseEntity<Singer> updateSinger(@PathVariable Long id, Singer singer, MultipartFile file){
+        String fileName = file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),
                     new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\artist\\" + fileName));
@@ -45,7 +45,7 @@ public class SingerController {
             ex.printStackTrace();
         }
         singer.setAvatar(fileName);
-        LocalDateTime time=LocalDateTime.now();
+        LocalDateTime time = LocalDateTime.now();
         singer.setId(id);
         singerService.save(singer);
         return new ResponseEntity<>(singer,HttpStatus.OK);
