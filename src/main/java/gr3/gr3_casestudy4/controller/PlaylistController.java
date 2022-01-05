@@ -42,8 +42,8 @@ public class PlaylistController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Playlist> createPlayList(Playlist playlist, MultipartFile file){
-        String fileName=file.getOriginalFilename();
+    public ResponseEntity<Playlist> createPlayList(Playlist playlist, MultipartFile file) {
+        String fileName = file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),
                     new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\albums\\" + fileName));
@@ -53,27 +53,35 @@ public class PlaylistController {
         playlist.setImage(fileName);
         playlist.setStatus(1);
         playlistService.save(playlist);
-        return new ResponseEntity<>(playlist,HttpStatus.OK);
+        return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/addSong")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Playlist> addSong(@PathVariable Long id, Long idSong) {
-        Optional<Playlist> playlist = playlistService.findById(id);
-        Set<Song> songs = playlist.get().getSongs();
-        songs.add(songService.findById(idSong).get());
-        playlist.get().setSongs(songs);
-        playlistService.save(playlist.get());
-        return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
+        Playlist playlist = playlistService.findById(id).get();
+        Set<Song> songs = playlist.getSongs();
+        if (!songs.contains(songService.findById(idSong).get())) {
+            songs.add(songService.findById(idSong).get());
+            playlist.setSongs(songs);
+            playlistService.save(playlist);
+            return new ResponseEntity<>(playlist, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}/removeSong")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Playlist> deleteSong(@PathVariable Long id, Long idSong) {
-        Optional<Playlist> playlist = playlistService.findById(id);
-        Set<Song> songs = playlist.get().getSongs();
-        songs.remove(songService.findById(idSong).get());
-        playlist.get().setSongs(songs);
-        playlistService.save(playlist.get());
-        return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
+        Playlist playlist = playlistService.findById(id).get();
+        Set<Song> songs = playlist.getSongs();
+        if (songs.contains(songService.findById(idSong).get())) {
+            songs.remove(songService.findById(idSong).get());
+            playlist.setSongs(songs);
+            playlistService.save(playlist);
+            return new ResponseEntity<>(playlist, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")

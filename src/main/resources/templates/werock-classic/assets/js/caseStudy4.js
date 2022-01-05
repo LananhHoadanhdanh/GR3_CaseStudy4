@@ -22,12 +22,10 @@ function showUpdateSong(id) {
         type: "Get",
         url: "http://localhost:8080/songs/" + id,
         success: function (song) {
-            console.log(song)
             $.ajax({
                 type: "GET",
                 url: "http://localhost:8080/singers",
                 success: function (singers) {
-                    console.log(singers.content)
                     let form = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
@@ -69,7 +67,7 @@ function showUpdateSong(id) {
                                   <select name="singer" id="singer">
                                     <option value="${song.singer.id}">${song.singer.name}</option>`
                     for (let i = 0; i < singers.content.length; i++) {
-                        form +=  `<option value="${singers.content[i].id}">${singers.content[i].name}</option>`
+                        form += `<option value="${singers.content[i].id}">${singers.content[i].name}</option>`
                     }
                     form += `</select>
                               </div>
@@ -96,7 +94,6 @@ function showUpdateSong(id) {
                 </div>
             </div>
         </section>`;
-                    console.log(form)
                     document.getElementById("ajaxArea").innerHTML = form;
                 }
             })
@@ -105,10 +102,9 @@ function showUpdateSong(id) {
 
 }
 
-function updateSong(id){
+function updateSong(id) {
     let form = document.getElementById("contactform");
     let data = new FormData(form);
-    console.log(data)
     $.ajax({
         type: "PUT",
         enctype: 'multipart/form-data',
@@ -118,9 +114,8 @@ function updateSong(id){
         contentType: false,
         cache: false,
         timeout: 1000000,
-        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token") },
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (mp3) {
-            console.log(mp3)
             alert("Sửa thành công")
             homePage()
         }
@@ -133,7 +128,6 @@ function showUpdateSinger(id) {
         type: "Get",
         url: "http://localhost:8080/singers/" + id,
         success: function (singer) {
-            console.log(singer)
             let form = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
@@ -190,16 +184,14 @@ function showUpdateSinger(id) {
                 </div>
             </div>
         </section>`;
-            console.log(form)
             document.getElementById("ajaxArea").innerHTML = form;
         }
     })
 }
 
-function updateSinger(id){
+function updateSinger(id) {
     let form = document.getElementById("contactform");
     let data = new FormData(form);
-    console.log(data)
     $.ajax({
         type: "PUT",
         enctype: 'multipart/form-data',
@@ -210,7 +202,6 @@ function updateSinger(id){
         cache: false,
         timeout: 1000000,
         success: function (song) {
-            console.log(song)
             alert("Cập nhật thành công!")
         }
     })
@@ -220,7 +211,7 @@ function show_update_playlist(id) {
 
 }
 
-function show_create_playlist(){
+function show_create_playlist() {
     let form = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
@@ -277,14 +268,12 @@ function show_create_playlist(){
                 </div>
             </div>
         </section>`;
-    console.log(form)
     document.getElementById("ajaxArea").innerHTML = form;
 }
 
 function createPlaylist() {
     let form = document.getElementById("contactform");
     let data = new FormData(form);
-    console.log(data)
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -294,15 +283,14 @@ function createPlaylist() {
         contentType: false,
         cache: false,
         timeout: 1000000,
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (playlist) {
-            console.log(playlist)
             alert("Thêm thành công")
         }
     })
 }
 
-function showCreateSinger(){
+function showCreateSinger() {
     let form = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
@@ -359,14 +347,12 @@ function showCreateSinger(){
                 </div>
             </div>
         </section>`;
-    console.log(form)
     document.getElementById("ajaxArea").innerHTML = form;
 }
 
-function createSinger(){
+function createSinger() {
     let form = document.getElementById("contactform");
     let data = new FormData(form);
-    console.log(data)
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -376,21 +362,19 @@ function createSinger(){
         contentType: false,
         cache: false,
         timeout: 1000000,
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (singer) {
-            console.log(singer)
             alert("Thêm thành công")
         }
     })
 }
 
 function showCreateSong() {
-$.ajax({
-type: "GET",
-url: "http://localhost:8080/singers",
-success: function (singers) {
-    console.log(singers.content)
-    let form = `<section class="breadcrumb">
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/singers",
+        success: function (singers) {
+            let form = `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -429,10 +413,10 @@ success: function (singers) {
                               <div class="col-lg-5 col-md-5 col-sm-5">
                                   <h5>Ca sĩ:</h5>
                                   <select name="singer" id="singer">`
-                                        for (let i = 0; i < singers.content.length; i++) {
-                                            form +=  `<option value="${singers.content[i].id}">${singers.content[i].name}</option>`
-                                        }
-                            form += `</select>
+            for (let i = 0; i < singers.content.length; i++) {
+                form += `<option value="${singers.content[i].id}">${singers.content[i].name}</option>`
+            }
+            form += `</select>
                               </div>
                               <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
                           </div>
@@ -457,9 +441,8 @@ success: function (singers) {
                 </div>
             </div>
         </section>`;
-    console.log(form)
-    document.getElementById("ajaxArea").innerHTML = form;
-    }
+            document.getElementById("ajaxArea").innerHTML = form;
+        }
     })
 
 }
@@ -467,7 +450,6 @@ success: function (singers) {
 function createSong() {
     let form = document.getElementById("contactform");
     let data = new FormData(form);
-    console.log(data)
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -477,9 +459,8 @@ function createSong() {
         contentType: false,
         cache: false,
         timeout: 1000000,
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (mp3) {
-            console.log(mp3)
             alert("Thêm thành công")
         }
     })
@@ -532,12 +513,12 @@ function show_media_list(array) {
                         <div class="jp-playlist">
                             <!--Add Songs In mp3 formate here-->
                             <ul class="hidden playlist-files">`;
-                    for (let i = 0; i < array.length; i++) {
-                        html += `<li data-title="${array[i].name}"
+    for (let i = 0; i < array.length; i++) {
+        html += `<li data-title="${array[i].name}"
                                     data-artist="${array[i].singer.name}"
                                     data-mp3="assets/audio/${array[i].mp3file}"></li>`
-                                }
-                    html += `
+    }
+    html += `
                     </ul>
                             <!--Playlist ends-->
                             <h5>Audio Playlist</h5>
@@ -575,12 +556,12 @@ function show_nav_bar() {
                                 class="fa fa-caret-right"></i></a></li>
                         <li class="yamm-fw dropdown"><a href="#" onclick="get_all_singer()">Nghệ sĩ <i class="fa fa-caret-right"></i></a></li>
                         <li class="dropdown"><a href="#">Danh sách phát <i class="fa fa-caret-right"></i></a></li>`
-        if (localStorage.getItem("userAccId") == null) {
-            html += `<li><a href="#" onclick="formRegister()">Đăng kí</a></li>
+    if (localStorage.getItem("userAccId") == null) {
+        html += `<li><a href="#" onclick="formRegister()">Đăng kí</a></li>
                         <li><a href="#" onclick="formLogin()">Đăng nhập</a></li>`
-        }
-        if (localStorage.getItem("userAccId") != null) {
-            html += `<li><a href="#" onclick="logout()">Đăng xuất</a></li>
+    }
+    if (localStorage.getItem("userAccId") != null) {
+        html += `<li><a href="#" onclick="logout()">Đăng xuất</a></li>
                         <li><a href="#" onclick="personal_page(${localStorage.getItem("userAccId")})">${localStorage.getItem("userAccName")}</a></li>
                     <li class="dropdown"><a href="#">Tạo Mới <i class="fa fa-caret-right"></i></a>
                       <ul class="dropdown-menu">
@@ -589,22 +570,21 @@ function show_nav_bar() {
                         <li><a onclick="showCreateSinger()">Thêm ca sĩ</a> </li>
                       </ul>
                     </li>`
-        }
-        html +=
-                    `</ul>
+    }
+    html +=
+        `</ul>
                 </div>
             </div>
         </div>`
-    document.getElementById("nav-bar").innerHTML=html;
+    document.getElementById("nav-bar").innerHTML = html;
 }
 
-function searchByName(){
+function searchByName() {
     let text = document.getElementById("search").value;
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/songs/search?q=" + text,
         success: function (songs) {
-            console.log(songs);
             show_song(songs.content);
             show_media_list(songs.content)
         }
@@ -614,7 +594,6 @@ function searchByName(){
         type: "GET",
         url: "http://localhost:8080/singers/search?q=" + text,
         success: function (singers) {
-            console.log(singers.content);
             show_singers(singers.content);
         }
     })
@@ -623,18 +602,16 @@ function searchByName(){
         type: "GET",
         url: "http://localhost:8080/playlists/search?q=" + text,
         success: function (playlists) {
-            console.log(playlists);
             show_playlist(playlists);
         }
     })
 }
 
-function get_all_singer(){
+function get_all_singer() {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/singers",
         success: function (singers) {
-            console.log(singers);
             let html = `
             <section class="breadcrumb">
              <div class="container">
@@ -666,19 +643,18 @@ function get_all_singer(){
                       <div class="hover">
                           <ul>
                               <li><a onclick="singer_detail(${singers.content[i].id})"><span class="fa fa-search"></span></a></li>`
-                              if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
-                                  html += `<li><a onclick="showUpdateSinger(${singers.content[i].id})"><i class="fas fa-cog"></i></a></li>
+                    if (singers.content[i].user.id == localStorage.getItem("userAccId")) {
+                        html += `<li><a onclick="showUpdateSinger(${singers.content[i].id})"><i class="fas fa-cog"></i></a></li>
                                            <li><a onclick="removeSinger(${singers.content[i].id})"><i class="far fa-trash-alt"></i></a></li>`
-                              }
-                          html +=
-                          `</ul>
+                    }
+                    html +=
+                        `</ul>
                           <h3>${singers.content[i].name}</h3>
                       </div>
                   </div>`
                 }
             }
-            html += `
-            </div><!--//artist list-->
+            html += `</div><!--//artist list-->
               </div><!--row-->
           </div><!--//container-->  
       </section>`
@@ -687,12 +663,11 @@ function get_all_singer(){
     })
 }
 
-function singer_detail(id){
+function singer_detail(id) {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/singers/" + id,
         success: function (singer) {
-            console.log(singer)
             let view = `
             <section class="breadcrumb">
              <div class="container">
@@ -734,9 +709,8 @@ function singer_detail(id){
             $.ajax({
                 type: "GET",
                 url: "http://localhost:8080/singers/" + id + "/songs",
-                headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+                headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
                 success: function (songs) {
-                    console.log(songs.content);
                     for (let i = 0; i < songs.content.length; i++) {
                         view += `
                         <div class="track clearfix">
@@ -769,7 +743,6 @@ function song_detail(id) {
         type: "GET",
         url: "http://localhost:8080/songs/" + id,
         success: function (song) {
-            console.log(song)
             let view = `
              <section class="breadcrumb">
                  <div class="container">
@@ -814,7 +787,7 @@ function song_detail(id) {
               </div>
           </div>
       </section>`
-      document.getElementById("ajaxArea").innerHTML = view;
+            document.getElementById("ajaxArea").innerHTML = view;
         }
     })
 }
@@ -831,14 +804,12 @@ function get_home_playlist() {
         type: "GET",
         url: "http://localhost:8080/playlists",
         success: function (playlists) {
-            console.log(playlists);
             show_playlist(playlists)
         }
     })
 }
 
 function show_playlist(array) {
-    console.log(array)
     let html = `
         <div class="container">
               <h1>Latest Playlists</h1>
@@ -859,7 +830,7 @@ function show_playlist(array) {
                 html += `<li><a onclick="show_update_playlist(${array[i].id})"><i class="fas fa-cog"></i></a></li>
                                      <li><a onclick="removePlaylist(${array[i].id})"><i class="far fa-trash-alt"></i></a></li>`
             }
-            html +=    `</ul>
+            html += `</ul>
                           <h3>${array[i].name}</h3>
                           <h2>${array[i].songs.length} bài hát</h2>
                       </div>
@@ -878,7 +849,6 @@ function get_home_songs() {
         type: "GET",
         url: "http://localhost:8080/songs",
         success: function (songs) {
-            console.log(songs.content);
             show_song(songs.content);
             show_media_list(songs.content)
         }
@@ -886,23 +856,81 @@ function get_home_songs() {
 }
 
 function show_song(array) {
-    let list = `<h1>Latest songs</h1>`
-    for (let i = 0; i < array.length; i++) {
-        if (array[i].status == 1) {
-            list += `<div class="news-feed row">
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/users/" + localStorage.getItem("userAccId") + "/playlists",
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
+        success: function (playlists) {
+            let list = `<h1>Latest songs</h1>`
+            for (let i = 0; i < array.length; i++) {
+                if (array[i].status == 1) {
+                    list += `<div class="news-feed row">
                           <img src="assets/img/artist/${array[i].singer.avatar}" alt=""/>
                           <a onclick="song_detail(${array[i].id})">${array[i].name} - ${array[i].singer.name}</a>`
-                if (array[i].user.id == localStorage.getItem("userAccId")) {
-                    list += `<a onclick="showUpdateSong(${array[i].id})"><i class="fas fa-cog"></i></a>
+                    if (localStorage.getItem("userAccId") != null) {
+                        list += `
+                    <!-- Button trigger modal -->
+                    <a data-toggle="modal" data-target="#exampleModal${array[i].id}"><i class="fas fa-plus-circle"></i></a>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal${array[i].id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" style="color: #953b39; font-size: 40px">Thêm vào danh sách</h5>
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body" style="color: #1f0808; font-size: 20px">
+                          Chọn danh sách muốn thêm vào <br> <br>
+                          <select name="playlistId" id="playlistId${array[i].id}">`
+                        for (let j = 0; j < playlists.length; j++) {
+                            list += `<option value="${playlists[j].id}">${playlists[j].name}</option>`
+                        }
+                        list += `</select>  
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                            <button type="button" class="btn btn-success" onclick="addSongToList(${array[i].id})">Thêm</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>`
+                    }
+                    if (array[i].user.id == localStorage.getItem("userAccId")) {
+                        list += `<a onclick="showUpdateSong(${array[i].id})"><i class="fas fa-cog"></i></a>
                              <a onclick="removeSong(${array[i].id})"><i class="fas fa-trash-alt"></i></i></a>`
-                }
-                list += `<audio controls>
+                    }
+                    list += `<audio controls>
                               <source src="assets/audio/${array[i].mp3file}" type="audio/mpeg">
                           </audio>
                       </div>`
+                }
+            }
+            document.getElementById("latest_song").innerHTML = list
         }
-    }
-    document.getElementById("latest_song").innerHTML = list
+    });
+}
+
+function addSongToList(id) {
+    let playlistId = document.getElementById("playlistId"+id).value;
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            "Authorization": 'Bearer ' + localStorage.getItem("token")
+        },
+        type: 'PUT',
+        url: 'http://localhost:8080/playlists/' + playlistId + "/addSong?idSong=" + id,
+        success: function () {
+            alert("Thêm thành công!!!")
+            location.reload();
+        },
+        error: function (error) {
+            alert("Không thêm được. Có thể bài hát đã nằm trong danh sách.")
+            location.reload();
+        }
+    })
 }
 
 function removeSong(id) {
@@ -920,7 +948,6 @@ function removeSong(id) {
                 homePage()
             },
             error: function (error) {
-                console.log(error)
             }
         })
     }
@@ -941,7 +968,6 @@ function removeSinger(id) {
                 homePage()
             },
             error: function (error) {
-                console.log(error)
             }
         })
     }
@@ -962,7 +988,6 @@ function removePlaylist(id) {
                 homePage()
             },
             error: function (error) {
-                console.log(error)
             }
         })
     }
@@ -973,7 +998,6 @@ function get_home_singers() {
         type: "GET",
         url: "http://localhost:8080/singers",
         success: function (singers) {
-            console.log(singers);
             show_singers(singers.content);
         }
     })
@@ -986,26 +1010,26 @@ function show_singers(array) {
         <h1>Latest Artist</h1>
             <div class="artist-list">
                 <div class="row">`
-                    for (let i = 0; i < array.length; i++) {
-                        if (array[i].status == 1) {
-                        html += `
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].status == 1) {
+            html += `
                      <div class="album">
                       <img src="assets/img/artist/${array[i].avatar}" alt=""/>
                       <div class="hover">
                           <ul>
                               <li><a onclick="singer_detail(${array[i].id})"><span class="fa fa-search"></span></a></li>`
-                        if (array[i].user.id == localStorage.getItem("userAccId")) {
-                        html += `<li><a onclick="showUpdateSinger(${array[i].id})"><i class="fas fa-cog"></i></a></li>
+            if (array[i].user.id == localStorage.getItem("userAccId")) {
+                html += `<li><a onclick="showUpdateSinger(${array[i].id})"><i class="fas fa-cog"></i></a></li>
                                            <li><a onclick="removeSinger(${array[i].id})"><i class="far fa-trash-alt"></i></a></li>`
-                    }
-                        html +=
-                        `</ul>
+            }
+            html +=
+                `</ul>
                           <h3>${array[i].name}</h3>
                       </div>
                   </div>`
-                    }
-                    }
-                    html += `
+        }
+    }
+    html += `
                 </div><!--//artist list-->
             </div><!--row-->
         </div><!--//container-->
@@ -1077,14 +1101,12 @@ function login() {
         url: "http://localhost:8080/login",
         data: JSON.stringify(user),
         success: function (user) {
-            console.log(user)
             localStorage.setItem("token", user.accessToken)
             localStorage.setItem("userAccId", user.id)
             localStorage.setItem("userAccName", user.username)
             homePage()
         },
         error: function (error) {
-            console.log(error)
             alert("Sai tài khoản hoặc mật khẩu!")
         }
     });
@@ -1161,7 +1183,6 @@ function register() {
         "email": document.getElementById("email").value,
         "fullName": document.getElementById("fullName").value,
     }
-    console.log(user)
     $.ajax({
         headers: {
             'Accept': 'application/json',
@@ -1196,39 +1217,33 @@ function personal_page(userId) {
 }
 
 function get_personal_playlist(userId) {
-    console.log(userId)
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/users/" + userId + "/playlists",
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (playlists) {
-            console.log(playlists);
             show_playlist(playlists)
         }
     });
 }
 
 function get_personal_songs(userId) {
-    console.log(userId)
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/users/" + userId + "/songs",
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (songs) {
-            console.log(songs);
             show_song(songs)
         }
     });
 }
 
 function get_personal_singers(userId) {
-    console.log(userId)
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/users/" + userId + "/singers",
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (singers) {
-            console.log(singers);
             show_singers(singers)
         }
     });
