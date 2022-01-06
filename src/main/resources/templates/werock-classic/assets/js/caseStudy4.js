@@ -555,7 +555,7 @@ function show_nav_bar() {
                         <li class="active dropdown"><a href="#" onclick="homePage()">Trang chủ <i
                                 class="fa fa-caret-right"></i></a></li>
                         <li class="yamm-fw dropdown"><a href="#" onclick="get_all_singer()">Nghệ sĩ <i class="fa fa-caret-right"></i></a></li>
-                        <li class="dropdown"><a href="#">Danh sách phát <i class="fa fa-caret-right"></i></a></li>`
+                        <li class="dropdown"><a onclick="get_all_playlist()">Danh sách phát <i class="fa fa-caret-right"></i></a></li>`
     if (localStorage.getItem("userAccId") == null) {
         html += `<li><a href="#" onclick="formRegister()">Đăng kí</a></li>
                         <li><a href="#" onclick="formLogin()">Đăng nhập</a></li>`
@@ -650,6 +650,62 @@ function get_all_singer() {
                     html +=
                         `</ul>
                           <h3>${singers.content[i].name}</h3>
+                      </div>
+                  </div>`
+                }
+            }
+            html += `</div><!--//artist list-->
+              </div><!--row-->
+          </div><!--//container-->  
+      </section>`
+            document.getElementById("ajaxArea").innerHTML = html;
+        }
+    })
+}
+
+function get_all_playlist() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/playlists",
+        success: function (playlists) {
+            let html = `
+            <section class="breadcrumb">
+             <div class="container">
+                  <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <h1>Danh sách phát</h1>
+                          <h5>Toàn bộ danh sách</h5>
+                      </div>
+                      
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <ul>
+                              <li><a href="#">Trang chủ</a></li>
+                              <li><a href="#">Danh sách phát</a></li>
+                          </ul>
+                      </div>
+                  </div>
+             </div>
+        </section>
+      <div class="clearfix"></div>
+      <section id="artists">
+          <div class="container">
+              <div class="artist-list">
+                  <div class="row">`
+            for (let i = 0; i < playlists.length; i++) {
+                if (playlists[i].status == 1) {
+                    html += `
+                    <div class="album">
+                      <img src="assets/img/artist/${playlists[i].image}" alt=""/>
+                      <div class="hover">
+                          <ul>
+                              <li><a onclick="playlist_detail(${playlists[i].id})"><span class="fa fa-search"></span></a></li>`
+                    if (playlists[i].user.id == localStorage.getItem("userAccId")) {
+                        html += `<li><a onclick="show_update_playlist(${playlists[i].id})"><i class="fas fa-cog"></i></a></li>
+                                           <li><a onclick="removePlaylist(${playlists[i].id})"><i class="far fa-trash-alt"></i></a></li>`
+                    }
+                    html +=
+                        `</ul>
+                          <h3>${playlists[i].name}</h3>
                       </div>
                   </div>`
                 }
