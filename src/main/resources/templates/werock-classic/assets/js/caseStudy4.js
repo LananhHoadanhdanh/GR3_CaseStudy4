@@ -839,19 +839,31 @@ function song_detail(id) {
                               </div>
                               <div class="artist-detail-content">
                                   <h3>Bình luận</h3>
-                              </div>
+                              </div><br>
+                              <div class="artist-detail-content">`
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/songs/" + song.id + "/comments",
+                success: function (array) {
+                    console.log(array)
+                    for (let i = 0; i < array.length; i++) {
+                        view += `<div class="row">
+                                    <table>
+                                    <tr>
+                                        <td rowspan="2"><img src="assets/img/users/${array[i].user.avatar}" alt="" width="50"></td>
+                                        <td><h5 style="color: #35ff00">&ensp;${array[i].user.fullName}</h5></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&ensp;${array[i].content}</td>
+                                    </tr>
+                                </table><br>
+                                  </div>`
+                    }
+                    view += `</div>
                               <div class="artist-detail-content">
                                   <div class="row">
-                                      <div class="col-2">Ảnh</div>
-                                      <div class="col-4">Tên</div>
-                                      <div class="col-6">Comt</div>
-                                  </div>
-                              </div>
-                              <div class="artist-detail-content">
-                                  <div class="row">
-                                      <div class="col-2">Ảnh</div>
-                                      <div class="col-7">Tên</div>
-                                      <div class="col-3"><input type="text" id="commentUser"><button type="submit" onclick="comment(${song.id})">Bình luận</button></div>
+                                      <div class="col-3"><input type="text" id="commentUser" style="border-radius: 5px; width: 400px; height: 38px; margin-right: 10px">
+                                      <button class="btn btn-primary"  id="submit1" type="button" onclick="comment(${song.id})">Bình luận</button></div><br>
                                   </div>
                               </div>
                           </div>
@@ -860,8 +872,10 @@ function song_detail(id) {
               </div>
           </div>
       </section>`
-            document.getElementById("ajaxArea").innerHTML = view;
-        }
+                    document.getElementById("ajaxArea").innerHTML = view;
+                }
+            })
+         }
     })
 }
 
