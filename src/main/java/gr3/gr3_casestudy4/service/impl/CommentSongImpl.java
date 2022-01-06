@@ -14,4 +14,9 @@ public class CommentSongImpl implements CommentSongService {
     public void save(CommentSong commentSong) {
         commentSongRepository.save(commentSong);
     }
+
+    @Override
+    public Iterable<CommentSong> findAllBySong(Long id) {
+        return commentSongRepository.findAllBySong(id);
+    }
 }

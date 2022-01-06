@@ -842,15 +842,15 @@ function song_detail(id) {
                               </div>
                               <div class="artist-detail-content">
                                   <div class="row">
-                                      <div class="col-3" style="float: left; margin-right: 20px">Ảnh</div>
-                                      <div class="col-3" style="float: left; margin-right: 20px">Tên</div>
-                                      <div class="col-3">Comt</div>
+                                      <div class="col-2">Ảnh</div>
+                                      <div class="col-4">Tên</div>
+                                      <div class="col-6">Comt</div>
                                   </div>
                               </div>
                               <div class="artist-detail-content">
                                   <div class="row">
-                                      <div class="col-3" style="float: left; margin-right: 20px">Ảnh</div>
-                                      <div class="col-3" style="float: left; margin-right: 20px">Tên</div>
+                                      <div class="col-2">Ảnh</div>
+                                      <div class="col-7">Tên</div>
                                       <div class="col-3"><input type="text" id="commentUser"><button type="submit" onclick="comment(${song.id})">Bình luận</button></div>
                                   </div>
                               </div>
@@ -881,7 +881,7 @@ function comment(songId) {
             'Content-Type': 'application/json',
         },
         type: 'POST',
-        url: 'http://localhost:8080/songs/' + songId + '/comment',
+        url: 'http://localhost:8080/songs/' + songId + '/comments',
         data: JSON.stringify(comment),
         success: function () {
             song_detail(songId)

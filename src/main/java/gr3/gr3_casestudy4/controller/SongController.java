@@ -91,10 +91,16 @@ public class SongController {
         songService.remove(id);
         return new ResponseEntity<>(songService.findById(id).get(),HttpStatus.OK);
     }
-    @PostMapping("/{id}/comment")
+    @PostMapping("/{id}/comments")
     public ResponseEntity<CommentSong> createComment(@RequestBody CommentSong commentSong){
         commentSong.setTime(LocalDateTime.now());
         commentSongService.save(commentSong);
         return new ResponseEntity<>(commentSong,HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<Iterable<CommentSong>> findAllCommentBySong(@PathVariable Long id){
+        Iterable<CommentSong> commentSongs = commentSongService.findAllBySong(id);
+        return new ResponseEntity<>(commentSongs, HttpStatus.OK);
     }
 }
