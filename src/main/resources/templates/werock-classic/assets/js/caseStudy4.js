@@ -1036,12 +1036,28 @@ function get_home_songs() {
 }
 
 function show_song(array) {
+    let list =`<h1>Latest songs</h1>`;
+    if (localStorage.getItem("userAccId") == null) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].status == 1) {
+                list += `<div class="news-feed row">
+                          <img src="assets/img/artist/${array[i].singer.avatar}" alt=""/>
+                          <a onclick="song_detail(${array[i].id})">${array[i].name} - ${array[i].singer.name}</a>
+                        <audio controls>
+                              <source src="assets/audio/${array[i].mp3file}" type="audio/mpeg">
+                          </audio>
+                      </div>`
+        }
+        document.getElementById("latest_song").innerHTML = list
+        }
+    } else {
+
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/users/" + localStorage.getItem("userAccId") + "/playlists",
         headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (playlists) {
-            let list = `<h1>Latest songs</h1>`
+
             for (let i = 0; i < array.length; i++) {
                 if (array[i].status == 1) {
                     list += `<div class="news-feed row">
@@ -1090,6 +1106,7 @@ function show_song(array) {
             document.getElementById("latest_song").innerHTML = list
         }
     });
+    }
 }
 
 function addSongToList(id) {
