@@ -837,6 +837,23 @@ function song_detail(id) {
                                   <h5>${song.description}</h5>
                                   <p>${song.lyrics}</p>
                               </div>
+                              <div class="artist-detail-content">
+                                  <h3>Bình luận</h3>
+                              </div>
+                              <div class="artist-detail-content">
+                                  <div class="row">
+                                      <div class="col-3" style="float: left; margin-right: 20px">Ảnh</div>
+                                      <div class="col-3" style="float: left; margin-right: 20px">Tên</div>
+                                      <div class="col-3">Comt</div>
+                                  </div>
+                              </div>
+                              <div class="artist-detail-content">
+                                  <div class="row">
+                                      <div class="col-3" style="float: left; margin-right: 20px">Ảnh</div>
+                                      <div class="col-3" style="float: left; margin-right: 20px">Tên</div>
+                                      <div class="col-3"><input type="text" id="commentUser"><button type="submit" onclick="comment(${song.id})">Bình luận</button></div>
+                                  </div>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -844,6 +861,30 @@ function song_detail(id) {
           </div>
       </section>`
             document.getElementById("ajaxArea").innerHTML = view;
+        }
+    })
+}
+
+function comment(songId) {
+    let comment = {
+        content: document.getElementById("commentUser").value,
+        song : {
+            id: songId
+        },
+        user : {
+            id: localStorage.getItem("userAccId")
+        }
+    }
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        type: 'POST',
+        url: 'http://localhost:8080/songs/' + songId + '/comment',
+        data: JSON.stringify(comment),
+        success: function () {
+            song_detail(songId)
         }
     })
 }
