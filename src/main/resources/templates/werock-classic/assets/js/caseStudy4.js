@@ -792,6 +792,75 @@ function song_detail(id) {
     })
 }
 
+function playlist_detail(id) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/playlists/" + id,
+        success: function (playlist) {
+            let view = `
+            <section class="breadcrumb">
+             <div class="container">
+                  <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <h1>Danh sách phát</h1>
+                          <h5>Thông tin</h5>
+                      </div>
+                      
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <ul>
+                              <li><a href="#">Trang chủ</a></li>
+                              <li><a href="#">Danh sách phát</a></li>
+                              <li><a href="#">Thông tin</a></li>
+                          </ul>
+                      </div>
+                  </div>
+             </div>
+        </section>
+            <div class="clearfix"></div>
+            <section id="artists">
+            <div class="container">
+              <div class="row">
+                  <div class="artist-detail">
+                      <div class="artist">
+                          <div class="col-lg-4 col-md-4 col-sm-4">
+                          <figure class="artistFace">
+                              <img src="assets/img/albums/${playlist.image}" alt=""/>
+                             </figure> 
+                          </div>
+                           <div class="col-lg-8 col-md-8 col-sm-8">
+                              <div class="artist-detail-content">
+                                  <h3>${playlist.name}</h3>
+                                  <p>${playlist.songs.length} bài hát</p>
+                              </div><!--//artist-detail-content-->
+                              
+                              <div class="artist-tracks">
+                                  <h1>Danh sách bài hát</h1>`
+            for (let i = 0; i < playlist.songs.length; i++) {
+                if (playlist.songs[i].status == 1) {
+                    view += `<div class="news-feed row">
+                          <img src="assets/img/artist/${playlist.songs[i].singer.avatar}" alt=""/>`
+                    if (playlist.user.id == localStorage.getItem("userAccId")) {
+                        view += `<a onclick="removeFromPlaylist(${playlist.id},${playlist.songs[i].id})"><i class="fas fa-minus-square"></i></a>`
+                    }
+                    view +=  `<a onclick="song_detail(${playlist.songs[i].id})">${playlist.songs[i].name} - ${playlist.songs[i].singer.name}</a>
+                          <audio controls>
+                              <source src="assets/audio/${playlist.songs[i].mp3file}" type="audio/mpeg">
+                          </audio>
+                            </div>`
+                }
+            }
+            view += `</div><!--artist tracks-->
+                          </div>
+                      </div><!--\\\\artist-->
+                  </div><!--//artist detail-->
+              </div><!--row-->
+          </div><!--//container-->  
+      </section>`
+            document.getElementById("ajaxArea").innerHTML = view;
+        }
+    })
+}
+
 function logout() {
     localStorage.removeItem("token")
     localStorage.removeItem("userAccId")
@@ -825,7 +894,7 @@ function show_playlist(array) {
                 <img src="assets/img/albums/${array[i].image}" alt=""/>
                       <div class="hover">
                           <ul>
-                              <li><a href="assets/img/albums/${array[i].image}" data-rel="prettyPhoto"><span class="fa fa-search"></span></a></li>`
+                              <li><a onclick="playlist_detail(${array[i].id})" data-rel="prettyPhoto"><span class="fa fa-search"></span></a></li>`
             if (array[i].user.id == localStorage.getItem("userAccId")) {
                 html += `<li><a onclick="show_update_playlist(${array[i].id})"><i class="fas fa-cog"></i></a></li>
                                      <li><a onclick="removePlaylist(${array[i].id})"><i class="far fa-trash-alt"></i></a></li>`
@@ -928,6 +997,26 @@ function addSongToList(id) {
         },
         error: function (error) {
             alert("Không thêm được. Có thể bài hát đã nằm trong danh sách.")
+            location.reload();
+        }
+    })
+}
+
+function removeFromPlaylist(playlistId, songId) {
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            "Authorization": 'Bearer ' + localStorage.getItem("token")
+        },
+        type: 'PUT',
+        url: 'http://localhost:8080/playlists/' + playlistId + "/removeSong?idSong=" + songId,
+        success: function () {
+            alert("Xóa thành công!!!")
+            location.reload();
+        },
+        error: function (error) {
+            alert("Không xóa được.")
             location.reload();
         }
     })
