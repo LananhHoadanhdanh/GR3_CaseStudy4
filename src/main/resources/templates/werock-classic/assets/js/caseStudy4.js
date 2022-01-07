@@ -210,6 +210,7 @@ function updateSinger(id) {
 function show_update_playlist(id) {
 
 }
+
 function show_create_playlist() {
     let form = `<section class="breadcrumb">
             <div class="container">
@@ -564,7 +565,7 @@ function show_nav_bar() {
                     <li class="dropdown"><a href="#">${localStorage.getItem("userAccName")}<i class="fa fa-caret-right"></i></a>
                       <ul class="dropdown-menu">
                         <li><a onclick="personal_page(${localStorage.getItem("userAccId")})">Trang cá nhân</a> </li>
-                        <li><a onclick="show_edit_user(${localStorage.getItem("userAccId")})">Sửa thông tin</a> </li>  
+                        <li><a onclick="show_update_user(${localStorage.getItem("userAccId")})">Sửa thông tin</a> </li>  
                       </ul>
                     </li>      
                     <li class="dropdown"><a href="#">Tạo Mới <i class="fa fa-caret-right"></i></a>
@@ -583,7 +584,7 @@ function show_nav_bar() {
     document.getElementById("nav-bar").innerHTML = html;
 }
 
-function show_edit_user(id) {
+function show_update_user(id) {
     let form = ``
     $.ajax({
         type: "Get",
@@ -624,11 +625,11 @@ function show_edit_user(id) {
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-5">
                                     <h5>Mật khẩu:</h5>
-                                    <input type="password" name="password" value="${user.password}"/>
+                                    <input type="password" name="password"/>
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-5">
                                     <h5>Xác nhận lại mật khẩu:</h5>
-                                    <input type="password" name="confirmPassword" value="${user.confirmPassword}"/>
+                                    <input type="password" name="confirmPassword"/>
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-5">
                                     <h5>Họ và tên:</h5>
@@ -658,6 +659,7 @@ function show_edit_user(id) {
         }
     })
 }
+
 function updateUser(id) {
     console.log(id)
     let form = document.getElementById("contactform");
@@ -676,9 +678,13 @@ function updateUser(id) {
         success: function (user) {
             console.log(user)
             alert("xong")
+            localStorage.removeItem("userAccName")
+            localStorage.setItem("userAccName", user.username)
+            personal_page(id)
         }
     })
 }
+
 function searchByName() {
     let text = document.getElementById("search").value;
     $.ajax({
@@ -1138,6 +1144,7 @@ function get_home_songs() {
 function show_song(array) {
     let list =`<h1>Latest songs</h1>`;
     if (localStorage.getItem("userAccId") == null) {
+        console.log(array)
         for (let i = 0; i < array.length; i++) {
             if (array[i].status == 1) {
                 list += `<div class="news-feed row">

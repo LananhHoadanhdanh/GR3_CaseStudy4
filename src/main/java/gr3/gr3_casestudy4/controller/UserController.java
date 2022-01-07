@@ -89,12 +89,10 @@ public class UserController {
             roles1.add(role1);
             user.setRoles(roles1);
         }
-
-
         user.setAvatar("assets/img/users/ava_default.png");
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
@@ -137,6 +135,8 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         user.setAvatar(fileName);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
         user.setId(userOptional.get().getId());
         user.setRoles(userOptional.get().getRoles());
         userService.save(user);
