@@ -123,17 +123,17 @@ function updateSong(id) {
 }
 
 function showUpdateSinger(id) {
-    let str = ``
+    let form = ``
     $.ajax({
         type: "Get",
         url: "http://localhost:8080/singers/" + id,
         success: function (singer) {
-            let form = `<section class="breadcrumb">
+            form += `<section class="breadcrumb">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                        <h1>Thêm nghệ</h1>
-                        <h5>Thông tin nghệ</h5>
+                        <h1>Thêm nghệ sĩ</h1>
+                        <h5>Thông tin nghệ sĩ</h5>
                     </div>
 
                     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -561,8 +561,13 @@ function show_nav_bar() {
                         <li><a href="#" onclick="formLogin()">Đăng nhập</a></li>`
     }
     if (localStorage.getItem("userAccId") != null) {
-        html += `<li><a href="#" onclick="logout()">Đăng xuất</a></li>
-                        <li><a href="#" onclick="personal_page(${localStorage.getItem("userAccId")})">${localStorage.getItem("userAccName")}</a></li>
+           html += `<li><a href="#" onclick="logout()">Đăng xuất</a></li>
+                    <li class="dropdown"><a href="#">${localStorage.getItem("userAccName")}<i class="fa fa-caret-right"></i></a>
+                      <ul class="dropdown-menu">
+                        <li><a onclick="personal_page(${localStorage.getItem("userAccId")})">Trang cá nhân</a> </li>
+                        <li><a onclick="show_edit_user(${localStorage.getItem("userAccId")})">Sửa thông tin</a> </li>  
+                      </ul>
+                    </li>      
                     <li class="dropdown"><a href="#">Tạo Mới <i class="fa fa-caret-right"></i></a>
                       <ul class="dropdown-menu">
                         <li><a onclick="showCreateSong()">Thêm bài hát</a> </li>
@@ -577,6 +582,82 @@ function show_nav_bar() {
             </div>
         </div>`
     document.getElementById("nav-bar").innerHTML = html;
+}
+
+function show_edit_user(id) {
+    let form = ``
+    $.ajax({
+        type: "Get",
+        url: "http://localhost:8080/users/" + id,
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
+        success: function (user) {
+            form += `<section class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h1>Thông tin cá nhân</h1>
+                        <h5>Sửa thông tin</h5>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <ul>
+                            <li><a onclick="homePage()">Trang chủ</a></li>
+                            <li><a href="#">Sửa thông tin</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9">
+                        <form id="contactform" enctype="multipart/form-data">
+                            <div class="row">
+                            <input type="hidden" name="id" value="${user.id}"/>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h5>Tên đăng nhập:</h5>
+                                    <input type="text" name="username" value="${user.username}"/>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h5>Email:</h5>
+                                    <input type="text" name="email" value="${user.email}"/>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h5>Mật khẩu:</h5>
+                                    <input type="password" name="password" value="${user.password}"/>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h5>Xác nhận lại mật khẩu:</h5>
+                                    <input type="password" name="confirmPassword" value="${user.confirmPassword}"/>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h5>Họ và tên:</h5>
+                                    <input type="text" name="fullName" value="${user.fullName}"/>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h5>Ảnh đại diện:</h5>
+                                    <input type="file" name="file" value="${user.avatar}"/>
+                                </div>
+                            </div>
+                            <button id="submit1" type="submit" onclick="updateUser(${id})">Cập nhật</button>
+                            <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
+                        </form>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <p>Nhà số 23, Lô TT-01, Khu đô thị MonCity, P. Hàm Nghi, Hà Nội</p>
+                        <i class="fa fa-mobile-phone"></i>
+                        <p>0988666888</p>
+                        <b class=" fa fa-envelope"></b>
+                        <p>gr3@c0821i1.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+        document.getElementById("ajaxArea").innerHTML = form;
+        }
+    })
 }
 
 function searchByName() {
@@ -1121,10 +1202,12 @@ function addSongToList(id) {
         url: 'http://localhost:8080/playlists/' + playlistId + "/addSong?idSong=" + id,
         success: function () {
             alert("Thêm thành công!!!")
+            // playlist_detail(playlistId)
             location.reload();
         },
         error: function (error) {
             alert("Không thêm được. Có thể bài hát đã nằm trong danh sách.")
+            // playlist_detail(playlistId)
             location.reload();
         }
     })
@@ -1141,11 +1224,12 @@ function removeFromPlaylist(playlistId, songId) {
         url: 'http://localhost:8080/playlists/' + playlistId + "/removeSong?idSong=" + songId,
         success: function () {
             alert("Xóa thành công!!!")
-            location.reload();
+            playlist_detail(playlistId)
         },
         error: function (error) {
             alert("Không xóa được.")
             location.reload();
+            playlist_detail(playlistId)
         }
     })
 }
