@@ -5,33 +5,41 @@
     <title>Title</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        function showCreate() {
-            document.getElementById("main").innerHTML = `<form enctype="multipart/form-data" id="form">
-<input type="text" name="name">
-<input type="text" name="description">
-<input type="text" name="lyrics">
-    <input type="file" name="file"/>
-    <button type="button" onclick="submitForm()">Upload</button>
-
-</form>`;
+        function showUpdateUser(id) {
+            let str=`<form enctype="multipart/form-data">`;
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/users/"+id,
+                success: function (user){
+                    console.log(user)
+                    str+=`<input type="text" id="name" name="name" value="${user.fullName}"/>
+                          <input type="text" id="email" name="email" value="${user.email}"/>
+                          <input type="file" name="file" id="file" value="${user.avatar}"/>
+                           <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+                           <button id="submit1" type="submit" onclick="updateUser(${user.id})">Cập nhật </button>
+                           </form>
+`
+                    document.getElementById("main").innerHTML=str;
+                },
+            })
         }
 
-        function submitForm() {
+        function updateUser(id) {
             let form = document.getElementById("form");
             let data = new FormData(form);
             console.log(data)
             $.ajax({
-                type: "POST",
+                type: "PUT",
                 enctype: 'multipart/form-data',
-                url: "http://localhost:8080/songs",
+                url: "http://localhost:8080/users"+id,
                 data: data,
                 processData: false,
                 contentType: false,
                 cache: false,
                 timeout: 1000000,
-                success: function (mp3) {
-                    console.log(mp3)
-                    alert("mp3")
+                success: function (user) {
+                    console.log(user)
+                    alert("xong")
                 }
             })
         }
@@ -44,7 +52,7 @@
 <body>
 <!-- HTML5 Input Form Elements -->
 <div id="main"></div>
-
+<button onclick="showUpdateUser(2)">va</button>
 
 
 
