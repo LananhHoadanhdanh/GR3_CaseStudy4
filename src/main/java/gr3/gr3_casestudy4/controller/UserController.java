@@ -124,7 +124,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUserProfile(@PathVariable Long id,  User user, MultipartFile file) {
+    public ResponseEntity<User> updateUserProfile(@PathVariable Long id, User user, MultipartFile file) {
         String fileName = file.getOriginalFilename();
         try {
             FileCopyUtils.copy(file.getBytes(),
@@ -138,12 +138,7 @@ public class UserController {
         }
         user.setAvatar(fileName);
         user.setId(userOptional.get().getId());
-        user.setUsername(userOptional.get().getUsername());
-        user.setEnabled(userOptional.get().isEnabled());
-        user.setPassword(userOptional.get().getPassword());
         user.setRoles(userOptional.get().getRoles());
-        user.setConfirmPassword(userOptional.get().getConfirmPassword());
-
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

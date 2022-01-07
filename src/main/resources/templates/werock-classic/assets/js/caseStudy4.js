@@ -210,7 +210,6 @@ function updateSinger(id) {
 function show_update_playlist(id) {
 
 }
-
 function show_create_playlist() {
     let form = `<section class="breadcrumb">
             <div class="container">
@@ -614,7 +613,7 @@ function show_edit_user(id) {
                     <div class="col-lg-9 col-md-9 col-sm-9">
                         <form id="contactform" enctype="multipart/form-data">
                             <div class="row">
-                            <input type="hidden" name="id" value="${user.id}"/>
+                            <input type="hidden" name="id" value="${localStorage.getItem("userAccId")}"/>
                                 <div class="col-lg-5 col-md-5 col-sm-5">
                                     <h5>Tên đăng nhập:</h5>
                                     <input type="text" name="username" value="${user.username}"/>
@@ -640,7 +639,7 @@ function show_edit_user(id) {
                                     <input type="file" name="file" value="${user.avatar}"/>
                                 </div>
                             </div>
-                            <button id="submit1" type="submit" onclick="updateUser(${id})">Cập nhật</button>
+                            <button id="submit1" type="submit" onclick="updateUser(${user.id})">Cập nhật</button>
                             <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
                         </form>
                     </div>
@@ -659,7 +658,27 @@ function show_edit_user(id) {
         }
     })
 }
-
+function updateUser(id) {
+    console.log(id)
+    let form = document.getElementById("contactform");
+    let data = new FormData(form);
+    console.log(data)
+    $.ajax({
+        type: "PUT",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/users/"+id,
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
+        success: function (user) {
+            console.log(user)
+            alert("xong")
+        }
+    })
+}
 function searchByName() {
     let text = document.getElementById("search").value;
     $.ajax({

@@ -6,26 +6,29 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
         function showUpdateUser(id) {
-            let str=`<form enctype="multipart/form-data">`;
+            let str=``;
             $.ajax({
                 type: "GET",
                 url: "http://localhost:8080/users/"+id,
                 success: function (user){
                     console.log(user)
-                    str+=`<input type="text" id="name" name="name" value="${user.fullName}"/>
+                    str+=`<form enctype="multipart/form-data" id="abc">
+                          <input type="text" id="fullName" name="fullName" value="${user.fullName}"/>
                           <input type="text" id="email" name="email" value="${user.email}"/>
                           <input type="file" name="file" id="file" value="${user.avatar}"/>
-                           <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
-                           <button id="submit1" type="submit" onclick="updateUser(${user.id})">Cập nhật </button>
-                           </form>
+
+                           <button onclick="submitForm(${user.id})">Cập nhật </button>
+                        </form>
 `
                     document.getElementById("main").innerHTML=str;
-                },
+                }
+
             })
         }
 
-        function updateUser(id) {
-            let form = document.getElementById("form");
+        function submitForm(id) {
+            console.log(id)
+            let form = document.getElementById("abc");
             let data = new FormData(form);
             console.log(data)
             $.ajax({
@@ -37,9 +40,9 @@
                 contentType: false,
                 cache: false,
                 timeout: 1000000,
-                success: function (user) {
-                    console.log(user)
-                    alert("xong")
+                success: function (mp3) {
+                    console.log(mp3)
+                    alert("mp3")
                 }
             })
         }
