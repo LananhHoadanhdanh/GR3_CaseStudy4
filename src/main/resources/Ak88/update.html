@@ -5,25 +5,36 @@
     <title>Title</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-        function showCreate() {
-            document.getElementById("main").innerHTML = `<form enctype="multipart/form-data" id="form">
-<input type="text" name="name">
-<input type="text" name="description">
-<input type="text" name="lyrics">
-    <input type="file" name="file"/>
-    <button type="button" onclick="submitForm()">Upload</button>
+        function showUpdateUser(id) {
+            let str=``;
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/users/"+id,
+                success: function (user){
+                    console.log(user)
+                    str+=`<form enctype="multipart/form-data" id="abc">
+                          <input type="text" id="fullName" name="fullName" value="${user.fullName}"/>
+                          <input type="text" id="email" name="email" value="${user.email}"/>
+                          <input type="file" name="file" id="file" value="${user.avatar}"/>
 
-</form>`;
+                           <button onclick="submitForm(${user.id})">Cập nhật </button>
+                        </form>
+`
+                    document.getElementById("main").innerHTML=str;
+                }
+
+            })
         }
 
-        function submitForm() {
-            let form = document.getElementById("form");
+        function submitForm(id) {
+            console.log(id)
+            let form = document.getElementById("abc");
             let data = new FormData(form);
             console.log(data)
             $.ajax({
-                type: "POST",
+                type: "PUT",
                 enctype: 'multipart/form-data',
-                url: "http://localhost:8080/songs",
+                url: "http://localhost:8080/users"+id,
                 data: data,
                 processData: false,
                 contentType: false,
@@ -44,7 +55,7 @@
 <body>
 <!-- HTML5 Input Form Elements -->
 <div id="main"></div>
-
+<button onclick="showUpdateUser(2)">va</button>
 
 
 

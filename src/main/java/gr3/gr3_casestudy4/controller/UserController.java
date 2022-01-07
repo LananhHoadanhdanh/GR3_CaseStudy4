@@ -90,13 +90,7 @@ public class UserController {
             user.setRoles(roles1);
         }
 
-//        String fileName = avt.getOriginalFilename();
-//        try {
-//            FileCopyUtils.copy(avt.getBytes(),
-//                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\static\\images" + fileName)); // coppy ảnh từ ảnh nhận được vào thư mục quy định,
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+
         user.setAvatar("assets/img/users/ava_default.png");
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -130,18 +124,21 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUserProfile(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUserProfile(@PathVariable Long id, User user, MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\static\\images\\" + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         Optional<User> userOptional = this.userService.findById(id);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        user.setAvatar(fileName);
         user.setId(userOptional.get().getId());
-        user.setUsername(userOptional.get().getUsername());
-        user.setEnabled(userOptional.get().isEnabled());
-        user.setPassword(userOptional.get().getPassword());
         user.setRoles(userOptional.get().getRoles());
-        user.setConfirmPassword(userOptional.get().getConfirmPassword());
-
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
