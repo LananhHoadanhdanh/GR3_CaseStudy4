@@ -2938,11 +2938,11 @@ ul.dropdown-menu {
 .news-feed > a{
 	float: left;
 	padding: 0;
-	margin-left: 30px;
+	margin-left: 20px;
 }
 
 .news-feed > audio{
-	margin-left: 30px;
+	margin-left: 20px;
 }
 
 .artist-detail > audio{
