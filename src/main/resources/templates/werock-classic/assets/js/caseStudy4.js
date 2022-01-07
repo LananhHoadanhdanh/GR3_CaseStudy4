@@ -1368,7 +1368,7 @@ function formLogin() {
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <h5>Mật khẩu:</h5>
-                                <input type="text" id="password"/>
+                                <input type="password" id="password"/>
                             </div>
                         </div>
                         <button id="submit1" type="submit" onclick="login()">Đăng nhập</button>
@@ -1447,11 +1447,11 @@ function formRegister() {
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <h5>Mật khẩu:</h5>
-                                <input type="text" id="password"/>
+                                <input type="password" id="password"/>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <h5>Xác nhận lại mật khẩu:</h5>
-                                <input type="text" id="confirmPassword"/>
+                                <input type="password" id="confirmPassword"/>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <h5>Họ và tên:</h5>
