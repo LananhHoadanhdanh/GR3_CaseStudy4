@@ -56,6 +56,23 @@ public class PlaylistController {
         return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Playlist> updatePlayList(@PathVariable Long id, Playlist playlist, MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(),
+                    new File("F:\\Rei\\Code Gym\\Luyen tap\\GR3_CaseStudy4\\src\\main\\resources\\templates\\werock-classic\\assets\\img\\albums\\" + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        playlist.setImage(fileName);
+        playlist.setStatus(1);
+        playlist.setId(id);
+        playlistService.save(playlist);
+        return new ResponseEntity<>(playlist, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}/addSong")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Playlist> addSong(@PathVariable Long id, Long idSong) {

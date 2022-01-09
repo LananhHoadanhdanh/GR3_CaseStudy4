@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
+
     Iterable<Playlist> findAllByNameContaining(String name);
 
-    @Query("select p from Playlist p where p.user.id = :id")
+    @Query("select p from Playlist p where p.status = 1 and p.user.id = :id")
     Iterable<Playlist> findByUser(@Param("id") Long id);
 }

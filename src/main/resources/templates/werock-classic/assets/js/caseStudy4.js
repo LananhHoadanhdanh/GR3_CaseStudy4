@@ -117,7 +117,7 @@ function updateSong(id) {
         headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (mp3) {
             alert("Sửa thành công")
-            homePage()
+            song_detail(id)
         }
     })
 }
@@ -132,14 +132,14 @@ function showUpdateSinger(id) {
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                        <h1>Thêm nghệ sĩ</h1>
+                        <h1>Sửa thông tin nghệ sĩ</h1>
                         <h5>Thông tin nghệ sĩ</h5>
                     </div>
 
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <ul>
                             <li><a href="#">Trang chủ</a></li>
-                            <li><a href="#">Thêm nghệ sĩ</a></li>
+                            <li><a href="#">Sửa thông tin nghệ sĩ</a></li>
                         </ul>
                     </div>
                 </div>
@@ -201,14 +201,93 @@ function updateSinger(id) {
         contentType: false,
         cache: false,
         timeout: 1000000,
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (song) {
             alert("Cập nhật thành công!")
+            song_detail(id)
         }
     })
 }
 
 function show_update_playlist(id) {
+    let form = ``
+    $.ajax({
+        type: "Get",
+        url: "http://localhost:8080/playlists/" + id,
+        success: function (playlist) {
+            form += `<section class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h1>Sửa danh sách phát nhạc</h1>
+                        <h5>Thông tin chi tiết</h5>
+                    </div>
 
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Sửa danh sách phát nhạc</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <section id="contact">
+            <div class="container">
+                <div class="row">
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                        <form id="contactform" enctype="multipart/form-data">
+                          <div class="row">
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Tên danh sách:</h5>
+                                  <input type="text" id="name" name="name" value="${playlist.name}"/>
+                              </div>
+                              <div class="col-lg-5 col-md-5 col-sm-5">
+                                  <h5>Ảnh minh họa:</h5>
+                                   <input type="file" name="file" id="file" value="${playlist.image}"/>
+                              </div>
+                              <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
+                              <input type="hidden" name="status" value="1">
+                          </div>
+                          <button id="submit1" type="submit" onclick="updatePlaylist(${id})">Cập nhật danh sách</button>
+                      </form>
+                            <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
+                        </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <p>Nhà số 23, Lô TT-01, Khu đô thị MonCity, P. Hàm Nghi, Hà Nội</p>
+                        <i class="fa fa-mobile-phone"></i>
+                        <p>0988666888</p>
+                        <b class=" fa fa-envelope"></b>
+                        <p>gr3@c0821i1.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+        document.getElementById("ajaxArea").innerHTML = form;
+        }
+    })
+}
+
+function updatePlaylist(id) {
+    let form = document.getElementById("contactform");
+    let data = new FormData(form);
+    $.ajax({
+        type: "PUT",
+        enctype: 'multipart/form-data',
+        url: "http://localhost:8080/playlists/" + id,
+        data: data,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 1000000,
+        headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
+        success: function (playlist) {
+            alert("Cập nhật thành công!")
+            playlist_detail(id)
+        }
+    })
 }
 
 function show_create_playlist() {
@@ -247,12 +326,6 @@ function show_create_playlist() {
                               <input type="hidden" name="user" value="${localStorage.getItem("userAccId")}">
                               <input type="hidden" name="status" value="1">
                           </div>
-<!--                          <div class="row">-->
-<!--                              <div class="col-lg-12 col-md-12 col-sm-12">-->
-<!--                                  <h5>Mô tả:</h5>-->
-<!--                                  <textarea name="description" id="message"></textarea>-->
-<!--                              </div>-->
-<!--                          </div>-->
                           <button id="submit1" type="submit" onclick="createPlaylist()">Thêm danh sách</button>
                       </form>
                             <div id="valid-issue" style="display:none;"> Please Provide Valid Information</div>
@@ -999,6 +1072,7 @@ function comment(songId) {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            "Authorization": 'Bearer ' + localStorage.getItem("token"),
         },
         type: 'POST',
         url: 'http://localhost:8080/songs/' + songId + '/comments',

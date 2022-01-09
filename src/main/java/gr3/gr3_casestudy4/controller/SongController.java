@@ -53,7 +53,7 @@ public class SongController {
         }
         song.setMp3file(fileName);
         song.setStatus(1);
-        LocalDateTime time=LocalDateTime.now();
+        LocalDateTime time = LocalDateTime.now();
         song.setCreateTime(time);
         song.setId(id);
        songService.save(song);
