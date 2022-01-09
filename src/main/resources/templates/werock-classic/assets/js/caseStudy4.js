@@ -117,7 +117,7 @@ function updateSong(id) {
         headers: {"Authorization": 'Bearer ' + localStorage.getItem("token")},
         success: function (mp3) {
             alert("Sửa thành công")
-            song_detail(id)
+            homePage()
         }
     })
 }
